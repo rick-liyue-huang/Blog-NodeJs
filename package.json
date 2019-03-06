@@ -1,0 +1,21 @@
+{
+  "name": "Blog-NodeJs",
+  "version": "1.0.0",
+  "description": "### Introduction In this project, I use Node.js to create one server supporting one blog. It contains 'Home page', 'Author page', 'Detail page', 'Login page', 'management center', 'new page', 'edit page'.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rick-liyue-huang/Blog-NodeJs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rick-liyue-huang/Blog-NodeJs/issues"
+  },
+  "homepage": "https://github.com/rick-liyue-huang/Blog-NodeJs#readme"
+}
