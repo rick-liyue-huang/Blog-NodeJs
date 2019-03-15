@@ -19,6 +19,9 @@
 //   res.end(JSON.stringify(resData));
 // };
 
+// import querystring
+const querystring = require('querystring');
+
 // import blog and user router 
 const handleBlogRouter = require('./src/router/blog');
 const handleUserRouter = require('./src/router/user');
@@ -28,6 +31,10 @@ const serverHandle = (req, res) => {
 
   const url = req.url;
   req.path = url.split('?')[0];
+
+  // compose query
+  req.query = querystring.parse(url.split('?')[1]);
+  // and will transfer to blog and user router file
 
   // deal with blog router
   const blogData = handleBlogRouter(req, res);

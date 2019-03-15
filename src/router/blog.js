@@ -1,4 +1,9 @@
 
+// import controller func
+const { getList } = require('../controller/blog');
+// import data model
+const { SuccessModel, ErrorModel } = require('../model/resModel');
+
 // based on interface design we have 'blog' interface
 const handleBlogRouter = (req, res) => {
 
@@ -8,9 +13,15 @@ const handleBlogRouter = (req, res) => {
 
   // get blog list
   if(method === 'GET' && req.path === '/api/blog/list') {
-    return {
-      msg: 'this is get blog list interface'
-    }
+
+    const author = req.query.author || '';
+    const keyword = req.query.keyword || '';
+    const listData = getList(author, keyword);
+
+    return new SuccessModel(listData);
+    // return {
+    //   msg: 'this is get blog list interface'
+    // }
   }
 
   // get blog detail
