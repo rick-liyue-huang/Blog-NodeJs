@@ -24,6 +24,7 @@
     "nodemon": "^1.18.10"
   },
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "mysql": "^2.16.0"
   }
 }

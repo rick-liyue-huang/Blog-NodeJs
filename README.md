@@ -39,6 +39,43 @@ server 接收到http请求，处理并返回 focus on
   },
 
 
+talk about mysql
+mysql workbench for sql
+
+`
+use myblog1;
+-- show tables;
+insert into users(username, `password`, realname) values('rick', '666', 'huangliyue');
+select * from users;
+
+select id username from users;
+
+select * from users where username='rick';
+
+select * from users where username='rick' and `password`='666';
+
+select * from users where username='rick' or `password`='456';
+
+select * from users where username like '%ri%'
+
+select * from users where `password` like '%6%' order by id desc;
+
+SET SQL_SAFE_UPDATES=0;
+update users set realname='liyuehuang' where username='rick';
+delete from users where username='liyue';
+
+update users set state='0' where username='rick'; soft delete
+
+select * from users where state='1';
+
+select * from users where state<>'0';
+
+select version();
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+and then change password as 'password'
+`
+
 
 
 
