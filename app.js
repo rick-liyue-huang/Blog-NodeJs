@@ -33,6 +33,11 @@ const serverHandle = (req, res) => {
   const blogData = handleBlogRouter(req, res);
   if(blogData) {
     res.end(JSON.stringify(blogData));
+    // res.end(JSON.stringify({
+    //   errno: 0,
+    //   data: {...},
+    //   message: 'xxx'
+    // }))
     return
   }
 
