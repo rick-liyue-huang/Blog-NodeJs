@@ -26,8 +26,17 @@ DNS解析， 建立TCP 三次握手， 处理， 并返回
 server 接收到http请求，处理并请求
 客户端接收到返回数据，处理数据，包括渲染页面执行js
 
+vscode debug code 
 
 
+DNS 解析，建立tcp连接，发送http请求
+server 接收到http请求，处理并返回 focus on
+客户端接收到返回数据，处理数据
+
+"devDependencies": {
+    "cross-env": "^5.2.0",
+    "nodemon": "^1.18.10"
+  },
 
 
 

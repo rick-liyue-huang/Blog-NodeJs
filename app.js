@@ -1,16 +1,15 @@
 
 const serverHandle = (req, res) => {
+  
+  res.setHeader('Content-ype', 'application/json');
 
-    // set res type
-    res.setHeader('Content-type', 'application/json');
+  const resData = {
+    name: 'rickhuang',
+    content: 'good',
+    env: process.env.NODE_ENV // dev when run npm run dev
+  };
 
-    const resData = {
-        name: 'leo',
-        site: 'master',
-        env: process.env.NODE_ENV
-    };
-
-    res.end(JSON.stringify(resData));
+  res.end(JSON.stringify(resData));
 };
 
-module.exports = serverHandle
+module.exports = serverHandle;
