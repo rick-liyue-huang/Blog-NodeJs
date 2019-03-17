@@ -61,8 +61,8 @@ const userRouterHandler = require('./src/router/user');
 
   // set request parameters
   const url = req.url;
-  const path = url.split('?')[0];
-  const query = querystring.parse(url.split('?')[1]);
+  req.path = url.split('?')[0];
+  req.query = querystring.parse(url.split('?')[1]);
 
   // deal with post data by promise object
   getPostDataHandler(req).then(postdata => {
