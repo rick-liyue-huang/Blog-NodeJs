@@ -1,125 +1,96 @@
 
 
-/**
- * 初始化路由：根据之前的技术方案的设计做出路由
- * 返回假数据：将路由和数据处理分离，以符合设计原则
- *  */ 
-
-
-// const serverHandle = (req, res) => {
-  
-//   res.setHeader('Content-ype', 'application/json');
-
-//   const resData = {
-//     name: 'rickhuang',
-//     content: 'good',
-//     env: process.env.NODE_ENV // dev when run npm run dev
-//   };
-
-//   res.end(JSON.stringify(resData));
-// };
-
-/**
- * 
- *  */ 
-
-// import querystring
 const querystring = require('querystring');
+// import two handle methods to deal with url blog and user
+const blogRouterHandler = require('./src/router/blog');
+const userRouterHandler = require('./src/router/user');
 
-// import blog and user router 
-const handleBlogRouter = require('./src/router/blog');
-const handleUserRouter = require('./src/router/user');
+/**
+ * set up getPostDataHandler function
+ * withdraw the function to get post data, and put the data on req.body when req.method === 'POST'
+ *  */ 
 
-// deal with post data by promise
-const getPostData = (req) => {
+ const getPostDataHandler = (req) => {
+
+  //  create promise object to deal with postdata
   const promise = new Promise((resolve, reject) => {
-
+    // if method is NOT Post
     if(req.method !== 'POST') {
-      resolve({}); // if method is get, return null object
-      return
-    }
-    // if format is not json, return null object
-    if(req.headers['content-type'] !== 'application/json') {
+      // get null object means req.body === null
       resolve({});
-      return
+      return;
     }
 
-    // will get post data
+    // if reqest header format is not json 
+    if(req.headers['content-type'] !== 'application/json') {
+      // get null object
+      resolve({});
+      return;
+    }
+
+    // deal with postdata
     let postData = '';
     req.on('data', chunk => {
-      postData += chunk.toString();
+      postData += chunk.toString(); // binary to string
     });
+
     req.on('end', () => {
+      // if not get postdata
       if(!postData) {
         resolve({});
-        return
+        return;
       }
-      // get postData
-      resolve(JSON.parse(postData));
+
+      resolve(JSON.stringify(postData));
     })
+  });
 
-  })
   return promise;
-}
+ }
 
-const serverHandle = (req, res) => {
-  res.setHeader('Content-type', 'application/json');
 
+/**
+ *  set up serverHandler function, used for deal with server logic application 
+ *  and export to server file of 'bin/www.js'
+ *  */  
+
+ const serverHandler = (req, res) => {
+  
+  // set response header format
+  res.setHeader('content-type', 'application/json');
+
+  // set request parameters
   const url = req.url;
-  req.path = url.split('?')[0];
+  const path = url.split('?')[0];
+  const query = querystring.parse(url.split('?')[1]);
 
-  // compose query
-  req.query = querystring.parse(url.split('?')[1]);
-  // and will transfer to blog and user router file
+  // deal with post data by promise object
+  getPostDataHandler(req).then(postdata => {
 
-  // deal post data
-  getPostData(req).then(postData => {
+    req.body = postdata;
+    /**
+     * here notice that req.body can be null 
+     *  */ 
 
-    // put postData in req body
-    req.body = postData;
+     const blogData = blogRouterHandler(req, res);
+     if(blogData) {
+       res.end(JSON.stringify(blogData));
+       return;
+     }
 
-    // deal with blog router
-    const blogData = handleBlogRouter(req, res);
-    if(blogData) {
-      res.end(JSON.stringify(blogData));
-      return
-    }
+     const userData = userRouterHandler(req, res);
+     if(userData) {
+       res.end(JSON.stringify(userData));
+       return;
+     }
 
-    // deal with user router
-    const userData = handleUserRouter(req, res);
-    if(userData) {
-      res.end(JSON.stringify(userData));
-      return
-    }
-
-    // deal with other router
-    res.writeHead(404, {"Content-type": "text/plain"}); // overwrite res.setHeader
-    res.write("404 not found\n");
-    res.end();
+     res.writeHead(404, {"content-type": "text/plain"});
+     res.end('404 Not Found\n');
 
   })
-/*
-  // deal with blog router
-  const blogData = handleBlogRouter(req, res);
-  if(blogData) {
-    res.end(JSON.stringify(blogData));
-    return
-  }
 
-  // deal with user router
-  const userData = handleUserRouter(req, res);
-  if(userData) {
-    res.end(JSON.stringify(userData));
-    return
-  }
+ }
 
-  // deal with other router
-  res.writeHead(404, {"Content-type": "text/plain"}); // overwrite res.setHeader
-  res.write("404 not found\n");
-  res.end();
-*/  
-}
+ module.exports = serverHandler;
 
-module.exports = serverHandle;
-
-
+ 

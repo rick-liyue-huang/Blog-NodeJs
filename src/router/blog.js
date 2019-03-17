@@ -5,7 +5,7 @@ const { getList, getDetail, newBlog, updateBlog, delBlog } = require('../control
 const { SuccessModel, ErrorModel } = require('../model/resModel');
 
 // based on interface design we have 'blog' interface
-const handleBlogRouter = (req, res) => {
+const blogRouterHandler = (req, res) => {
 
   const method = req.method; 
   const id = req.query.id;
@@ -78,4 +78,4 @@ const handleBlogRouter = (req, res) => {
   }
 }
 
-module.exports = handleBlogRouter;
+module.exports = blogRouterHandler;

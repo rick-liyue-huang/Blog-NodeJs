@@ -2,7 +2,7 @@
 const { loginCheck } = require('../controller/user');
 const { SuccessModel, ErrorModel } = require('../model/resModel');
 
-const handleUserRouter = (req, res) => {
+const userRouterHandler = (req, res) => {
   
   const method = req.method;
   // const url = req.url;
@@ -22,4 +22,4 @@ const handleUserRouter = (req, res) => {
   }
 }
 
-module.exports = handleUserRouter;
+module.exports = userRouterHandler;

@@ -4,18 +4,25 @@
 ### Introduction
 In this project, I use Node.js to create one server supporting one blog. It contains 'Home page', 'Author page', 'Detail page', 'Login page', 'management center', 'new page', 'edit page'.
 
+On the first part, I use only pure node.js to create the server connecting with mySQL database, and let the frontend to get the data in real time.
+
 ### Tech Proposal
 
-#### 
-1. how to store data;
-2. how to desgin interface.
+1. Create Server by node.js;
+2. Create database by MySQL datbase;
+3. Establish connection between server and database;
+4. Let frontend get data in real time.
 
-store blog by form
 
 ### Process
 
-
 #### Pure node.js
+
+In this porject, I firstly create the completed server by the pure node.js and query the data from mySQL database, and let front end get data from database through server. 
+
+I create server in file of 'bin/www.js', in which I import server inner logic application funcion 'serverHandler' in 'app.js'; while in the 'app.js' file, I deal with post method by one seperated function named 'getPostDataHandler', and deal with router of 'blog' and 'user' by two external functions named 'blogRouterHandler' and 'userRouterHandler' respectively.
+
+
 
 node.js deal with http
 create development
@@ -77,7 +84,7 @@ and then change password as 'password'
 `
 
 
-
+note: 'bin/www1.js' server is only the warm file.
 
 
 
