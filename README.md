@@ -4,14 +4,16 @@
 ### Introduction
 In this project, I use Node.js to create one server supporting one blog. It contains 'Home page', 'Author page', 'Detail page', 'Login page', 'management center', 'new page', 'edit page'.
 
-On the first part, I use only pure node.js to create the server connecting with mySQL database, and let the frontend to get the data in real time.
+On the first part, I use only pure node.js to create the server connecting with mySQL database, and let the front-end to get the data in real time.
+
+
 
 ### Tech Proposal
 
 1. Create Server by node.js;
 2. Create database by MySQL datbase;
 3. Establish connection between server and database;
-4. Let frontend get data in real time.
+4. Let front-end get data in real time.
 
 
 ### Process
@@ -22,6 +24,7 @@ In this porject, I firstly create the completed server by the pure node.js and q
 
 I create server in file of 'bin/www.js', in which I import server inner logic application funcion 'serverHandler' in 'app.js'; while in the 'app.js' file, I deal with post method by one seperated function named 'getPostDataHandler', and deal with router of 'blog' and 'user' by two external functions named 'blogRouterHandler' and 'userRouterHandler' respectively.
 
+In order to control router easily, I create two directories, named 'model' and 'controller', and in the 'model/resModel.js' I create the response format,which including 'errorno' property, while in 'controller/blog.js' and 'controller/user.js' I create some controllers to return some fixed data based on the given router.
 
 
 node.js deal with http
