@@ -64,34 +64,26 @@
 
 // async await 
 
-
 const mysql = require('mysql');
 
-// create connect object
 const con = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'localhost',
   user: 'root',
   password: 'password',
-  port: '3306',
+  port: 3306,
   database: 'myblog1'
 });
 
-// start connect
 con.connect();
 
-// exec sql code
-// const sql = 'select id, username from users;';
-// const sql = `update users set realname='liyuehuang';`;
-// const sql = 'select * from users;';
-const sql = 'insert into users(username, `password`, realname) values("claire", "678", "huangmiduo");';
-con.query(sql, (err, result) => {
+const sql = 'select * from users;'
+con.query(sql, (err, res) => {
   if(err) {
-    console.error(err);
+    console.log(err);
     return
   }
-  console.log(result);
-})
+  console.log(res);
+});
 
-// close connect
 con.end();
 

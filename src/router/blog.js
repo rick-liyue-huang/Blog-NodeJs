@@ -23,8 +23,14 @@ const blogRouterHandler = (req, res) => {
 
     const author = req.query.author || '';
     const keyword = req.query.keyword || '';
-    const listData = getListHandler(author, keyword);
-    return new SuccessModel(listData);
+    // const listData = getListHandler(author, keyword);
+    // return new SuccessModel(listData);
+
+    // return promise
+    const listResult = getListHandler(author, keyword);
+    return listResult.then(listdata => {
+      return new SuccessModel(listdata);
+    });
 
     // return {
     //   msg: 'list'
@@ -33,8 +39,13 @@ const blogRouterHandler = (req, res) => {
 
   if(method === 'GET' && req.path === '/api/blog/detail') {
 
-    const detailData = getDetailHandler(id);
-    return new SuccessModel(detailData);
+    const detailResult = getDetailHandler(id);
+    return detailResult.then(detailData => {
+      return new SuccessModel(detailData);
+    });
+
+    // const detailData = getDetailHandler(id);
+    // return new SuccessModel(detailData);
 
     // return {
     //   msg: 'detail'
@@ -43,13 +54,23 @@ const blogRouterHandler = (req, res) => {
 
   if(method === 'POST' && req.path === '/api/blog/update') {
 
-    const updateData = req.body;
-    const data = updateBlogHandler(id, updateData);
-    if(data) {
-      return new SuccessModel(data);
-    } else {
-      return new ErrorModel('update fail');
-    }
+    // result is promise
+    const result = updateBlogHandler(id, req.body);
+    return result.then(val => {
+      if(val) {
+        return new SuccessModel()
+      } else {
+        return ErrorModel('update fail');
+      }
+    })
+
+    // const updateData = req.body;
+    // const data = updateBlogHandler(id, updateData);
+    // if(data) {
+    //   return new SuccessModel(data);
+    // } else {
+    //   return new ErrorModel('update fail');
+    // }
     
 
     // return {
@@ -59,9 +80,16 @@ const blogRouterHandler = (req, res) => {
 
   if(method === 'POST' && req.path === '/api/blog/new') {
 
-    const newData = req.body;
-    const data = newBlogHandler(newData);
-    return new SuccessModel(data);
+    // use fake author
+    // req.body.author = 'author';
+    const newResult = newBlogHandler(req.body);
+    return newResult.then(data => {
+      return new SuccessModel(data);
+    });
+
+    // const newData = req.body;
+    // const data = newBlogHandler(newData);
+    // return new SuccessModel(data);
     
     // return {
     //   msg: 'new'
@@ -70,12 +98,22 @@ const blogRouterHandler = (req, res) => {
 
   if(method === 'POST' && req.path === '/api/blog/del') {
 
-    const data = delBlogHandler(id);
-    if(data) {
-      return new SuccessModel(data);
-    } else {
-      return new ErrorModel('del fail');
-    }
+    const author = 'rick';
+    const delResult = delBlogHandler(id, author);
+    return delResult.then(val => {
+      if(val) {
+        return new SuccessModel()
+      } else {
+        return new ErrorModel('del fail');
+      }
+    });
+
+    // const data = delBlogHandler(id);
+    // if(data) {
+    //   return new SuccessModel(data);
+    // } else {
+    //   return new ErrorModel('del fail');
+    // }
     
     // return {
     //   msg: 'del'

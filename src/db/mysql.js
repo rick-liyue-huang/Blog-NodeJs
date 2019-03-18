@@ -1,16 +1,15 @@
 
 const mysql = require('mysql');
-const { MYSQL_CONF } = require('../config/db');
+const { MYSQL_CONFIG } = require('../config/db');
 
 // create connection object
-const con = mysql.createConnection(MYSQL_CONF);
+const con = mysql.createConnection(MYSQL_CONFIG);
 
 // start connect
 con.connect();
 
-// exec sql func
+// execute sql function
 function exec(sql) {
-
   const promise = new Promise((resolve, reject) => {
     con.query(sql, (err, result) => {
       if(err) {
@@ -18,14 +17,12 @@ function exec(sql) {
         return
       }
       resolve(result);
-    })
-  })
-
+    });
+  });
   return promise;
+
+  // has to keep the con connected, to query frequently
 }
 
-// con.end() // keep connection open
+module.exports = { exec };
 
-module.exports = {
-  exec
-};

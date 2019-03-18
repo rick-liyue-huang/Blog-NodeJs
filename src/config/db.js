@@ -1,29 +1,26 @@
 
-// environment para
-const env = process.env.NODE_ENV;
+const env = process.env.NODE_ENV; // environment parameter
 
-let MYSQL_CONF;
+let MYSQL_CONFIG;
 
 if(env === 'dev') {
-  MYSQL_CONF = {
+  MYSQL_CONFIG = {
     host: 'localhost',
     user: 'root',
+    port: 3306,
     password: 'password',
-    port: '3306',
     database: 'myblog1'
   }
 }
 
 if(env === 'production') {
-  MYSQL_CONF = {
+  MYSQL_CONFIG = {
     host: 'localhost',
     user: 'root',
+    port: 3306,
     password: 'password',
-    port: '3306',
     database: 'myblog1'
   }
 }
 
-module.exports = {
-  MYSQL_CONF
-}
+module.exports = { MYSQL_CONFIG };

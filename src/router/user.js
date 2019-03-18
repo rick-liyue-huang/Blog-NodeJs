@@ -12,12 +12,20 @@ const userRouterHandler = (req, res) => {
   if(method === 'POST' && req.path === '/api/user/login') {
     const { username, password } = req.body;
     const result = loginCheck(username, password);
-    if(result) {
-      return new SuccessModel();
-    }
-    else {
+
+    return result.then(data => {
+      if(data.username) {
+        return new SuccessModel();
+      }
       return new ErrorModel('login fail');
-    }
+    })
+
+    // if(result) {
+    //   return new SuccessModel();
+    // }
+    // else {
+    //   return new ErrorModel('login fail');
+    // }
     
     // return {
     //   msg: 'this is post user login interface'
