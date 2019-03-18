@@ -15,7 +15,10 @@ const userRouterHandler = (req, res) => {
     if(result) {
       return new SuccessModel();
     }
-    return new ErrorModel('login fail');
+    else {
+      return new ErrorModel('login fail');
+    }
+    
     // return {
     //   msg: 'this is post user login interface'
     // }

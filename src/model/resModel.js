@@ -19,6 +19,7 @@ class BaseModel {
   }
 }
 
+// create two models based on the basemodel
 class SuccessModel extends BaseModel {
   constructor(data, message) {
     super(data, message);

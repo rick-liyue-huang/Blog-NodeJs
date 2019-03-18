@@ -41,8 +41,9 @@ const userRouterHandler = require('./src/router/user');
         return;
       }
 
-      resolve(JSON.stringify(postData));
-    })
+      // transfer string to object
+      resolve(JSON.parse(postData));
+    });
   });
 
   return promise;
@@ -92,5 +93,7 @@ const userRouterHandler = require('./src/router/user');
  }
 
  module.exports = serverHandler;
+
+
 
  

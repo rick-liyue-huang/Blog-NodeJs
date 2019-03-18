@@ -1,5 +1,5 @@
 
-const getList = (author, keyword) => {
+const getListHandler = (author, keyword) => {
   // return fake data whose format is same as real data
   return [
     {
@@ -20,7 +20,7 @@ const getList = (author, keyword) => {
 
 };
 
-const getDetail = (id) => ({
+const getDetailHandler = (id) => ({
   id: 1,
   title: 'title A',
   content: 'content A',
@@ -29,7 +29,7 @@ const getDetail = (id) => ({
 });
 
 // create new blog
-const newBlog = (blogData = {}) => {
+const newBlogHandler = (blogData = {}) => {
   // blog data is blog object contain title content
   console.log('new blog data...', blogData);
   return {
@@ -38,7 +38,7 @@ const newBlog = (blogData = {}) => {
 }
 
 // update one blog
-const updateBlog = (id, blogData = {}) => {
+const updateBlogHandler = (id, blogData = {}) => {
   // id is the updated blog id
   // blog data is blog object contain title content
   console.log('update blog data...', id, blogData);
@@ -46,15 +46,15 @@ const updateBlog = (id, blogData = {}) => {
 };
 
 // delete blog
-const delBlog = (id) => {
-  console.log('update blog data...', id);
+const delBlogHandler = (id) => {
+  console.log('delete blog data...', id);
   return true
 }
 
 module.exports = {
-  getList,
-  getDetail,
-  newBlog,
-  updateBlog,
-  delBlog
+  getListHandler,
+  getDetailHandler,
+  newBlogHandler,
+  updateBlogHandler,
+  delBlogHandler
 };

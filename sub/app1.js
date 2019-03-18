@@ -27,8 +27,8 @@
 const querystring = require('querystring');
 
 // import blog and user router 
-const handleBlogRouter = require('./src/router/blog');
-const handleUserRouter = require('./src/router/user');
+const handleBlogRouter = require('../src/router/blog');
+const handleUserRouter = require('../src/router/user');
 
 // deal with post data by promise
 const getPostData = (req) => {
