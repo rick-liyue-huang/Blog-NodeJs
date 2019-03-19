@@ -5,6 +5,16 @@ const querystring = require('querystring');
 const blogRouterHandler = require('./src/router/blog');
 const userRouterHandler = require('./src/router/user');
 
+const getCookieExpires = () => {
+  const d = new Date();
+  d.setTime(d.getTime() + (24 * 60 * 60 * 1000));
+  console.log('d.toGMTString() is ', d.toGMTString());
+  return d.toGMTString();
+}
+
+// session data
+const SESSION_DATA = {};
+
 /**
  * set up getPostDataHandler function
  * withdraw the function to get post data, and put the data on req.body when req.method === 'POST'
@@ -65,6 +75,46 @@ const userRouterHandler = require('./src/router/user');
   req.path = url.split('?')[0];
   req.query = querystring.parse(url.split('?')[1]);
 
+  /**
+   *  decompose cookie in server
+   *  */ 
+  /**
+   * in browser terminal: run `document.cookie='name=leo'`
+   * and then renew the browser page, we get {name: 'leo'}
+   *  */ 
+  req.cookie = {};
+  const cookieStr = req.headers.cookie || ''; // k1=v1;k2=v2;k3=v3
+  cookieStr.split(';').forEach(item => {
+    if(!item) {
+      return
+    }
+    const arr = item.split('=');
+    const key = arr[0].trim();
+    const val = arr[1].trim();
+    console.log(key, val);
+    req.cookie[key] = val;
+  });
+  console.log('req.cookie is ', req.cookie);
+  
+  /**
+   *  decompose session
+   *  */ 
+  // firslty try to get userid from req.cookie
+  let needSetCookie = false;
+  let userId = req.cookie.userid;
+  if(userId) {
+    if(!SESSION_DATA[userId]) {
+      SESSION_DATA[userId] = {};
+    } 
+  } else {
+    needSetCookie = true;
+    userId = `${Date.now()}_${Math.random()}`;
+    SESSION_DATA[userId] = {};
+  }
+  req.session = SESSION_DATA[userId];
+  
+
+
   // deal with post data by promise object
   getPostDataHandler(req).then(postdata => {
 
@@ -84,6 +134,12 @@ const userRouterHandler = require('./src/router/user');
     const blogResult = blogRouterHandler(req, res);
     if(blogResult) {
       blogResult.then(blogData => {
+
+        // confirm session
+        if(needSetCookie) {
+          res.setHeader('Set-Cookie', `userid=${userId}; path=/; httpOnly; expires='${getCookieExpires()}'`);
+        }
+
         res.end(JSON.stringify(blogData));
       });
       return
@@ -99,6 +155,10 @@ const userRouterHandler = require('./src/router/user');
    const userResult = userRouterHandler(req, res);
    if(userResult) {
      userResult.then(userData => {
+      // set cookie
+      if(needSetCookie) {
+        res.setHeader('Set-Cookie', `userid=${userId}; path=/; httpOnly; expires='${getCookieExpires()}'`);
+      }
        res.end(JSON.stringify(userData));
      });
      return
