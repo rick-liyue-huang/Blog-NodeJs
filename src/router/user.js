@@ -4,6 +4,7 @@ const {
   ErrorModel
 } = require('../model/resModel');
 const { postUserLoginHandler } = require('../controller/user'); 
+const { set } = require('../db/redis');
 
 // set cookie expires time
 // const getCookieExpires = () => {
@@ -45,8 +46,8 @@ const userRouterHandler = (req, res) => {
   //   */
   // }
 
-  if(req.method === 'GET' && req.path === '/api/user/login') {
-    const { username, password } = req.query;
+  if(req.method === 'POST' && req.path === '/api/user/login') {
+    const { username, password } = req.body;
     const result = postUserLoginHandler(username, password);
     return result.then(data => {
       if(data.username) {
@@ -56,6 +57,8 @@ const userRouterHandler = (req, res) => {
         
         req.session.username = data.username;
         req.session.realname = data.realname;
+        // sync to redis
+        set(req.sessionId, req.session);
 
         console.log('req.session is ', req.session);
         
@@ -66,15 +69,16 @@ const userRouterHandler = (req, res) => {
   }
 
   // only for login test
-  if(req.method === 'GET' && req.path === '/api/user/login-test') {
-    if(/*req.cookie.username*/ req.session.username) {
-      return Promise.resolve(new SuccessModel({
-        // username: req.cookie.username
-        session: req.session
-      }))
-    }
-    return Promise.resolve(new ErrorModel('unlogin'));
-  }
+  
+  // if(req.method === 'GET' && req.path === '/api/user/login-test') {
+  //   if(/*req.cookie.username*/ req.session.username) {
+  //     return Promise.resolve(new SuccessModel({
+  //       // username: req.cookie.username
+  //       session: req.session
+  //     }))
+  //   }
+  //   return Promise.resolve(new ErrorModel('unlogin'));
+  // }
 };
 
 module.exports = userRouterHandler;

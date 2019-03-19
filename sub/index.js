@@ -64,6 +64,8 @@
 
 // async await 
 
+// mysql test
+/*
 const mysql = require('mysql');
 
 const con = mysql.createConnection({
@@ -86,4 +88,30 @@ con.query(sql, (err, res) => {
 });
 
 con.end();
+*/
+
+// redis test
+
+const redis = require('redis');
+
+// create client
+const redisClient = redis.createClient(6379, '127.0.0.1');
+redisClient.on('error', err => {
+  console.error(err);
+});
+
+// test
+redisClient.set('myname', 'hahaha', redis.print);
+// this async
+redisClient.get('myname', (err, val) => {
+  if(err) {
+    console.log(err);
+    return;
+  }
+  console.log('val ', val);
+
+  // quit
+  redisClient.quit();
+
+});
 

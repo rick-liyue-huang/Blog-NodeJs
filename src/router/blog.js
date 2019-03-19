@@ -12,6 +12,16 @@ const {
   postBlogDelHandler
 } = require('../controller/blog');
 
+// verify login author function
+const loginCheck = (req) => {
+  if(!req.session.username) {
+    return Promise.resolve(
+      new ErrorModel('not login')
+    )
+  }
+  // if logined , nothing to do
+}
+
 const blogRouterHandler = (req, res) => {
 
   const method = req.method;
@@ -69,7 +79,15 @@ const blogRouterHandler = (req, res) => {
 
   if(method === 'POST' && req.path === '/api/blog/new') {
     
-    req.body.author = 'newauthor'; // fake author
+    // verify login or not
+    const loginCheckResult = loginCheck(req);
+    if(loginCheckResult) {
+      // unlogin
+      return loginCheck
+    }
+
+    // req.body.author = 'newauthor'; // fake author
+    req.body.author = req.session.username; // genuine author
     const newResult = postBlogNewHandler(req.body);
     return newResult.then(newData => {
       return new SuccessModel(newData);
@@ -94,6 +112,12 @@ const blogRouterHandler = (req, res) => {
   }
 
   if(method === 'POST' && req.path === '/api/blog/update') {
+
+    const loginCheckResult = loginCheck(req);
+    if(loginCheckResult) {
+      // unlogin
+      return loginCheck
+    }
     
     const updateResult = postBlogUpdateHandler(id, req.body);
     return updateResult.then(updateData => {
@@ -122,7 +146,14 @@ const blogRouterHandler = (req, res) => {
 
   if(method === 'POST' && req.path === '/api/blog/del') {
 
-    const author = 'rick';
+    const loginCheckResult = loginCheck(req);
+    if(loginCheckResult) {
+      // unlogin
+      return loginCheck
+    }
+
+    // const author = 'rick';
+    const author = req.session.username;
     const delResult = postBlogDelHandler(id, author);
     return delResult.then(delData => {
       if(delData) {

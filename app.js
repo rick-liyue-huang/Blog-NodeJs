@@ -4,6 +4,7 @@ const querystring = require('querystring');
 // import two handle methods to deal with url blog and user
 const blogRouterHandler = require('./src/router/blog');
 const userRouterHandler = require('./src/router/user');
+const { get, set } = require('./src/db/redis');
 
 const getCookieExpires = () => {
   const d = new Date();
@@ -13,7 +14,7 @@ const getCookieExpires = () => {
 }
 
 // session data
-const SESSION_DATA = {};
+// const SESSION_DATA = {};
 
 /**
  * set up getPostDataHandler function
@@ -100,6 +101,9 @@ const SESSION_DATA = {};
    *  decompose session
    *  */ 
   // firslty try to get userid from req.cookie
+
+  // here put session in server
+  /*
   let needSetCookie = false;
   let userId = req.cookie.userid;
   if(userId) {
@@ -112,11 +116,37 @@ const SESSION_DATA = {};
     SESSION_DATA[userId] = {};
   }
   req.session = SESSION_DATA[userId];
-  
+  */
 
+  // here put session in redis
+  let needSetCookie = false;
+  let userId = req.cookie.userid;
+  if(!userId) {
+    needSetCookie = true;
+    userId = `${Date.now()}_${Math.random()}`;
+    // init session value in redis
+    set(userId, {})
+  }
+  // get session
+  req.sessionId = userId;
+  get(req.sessionId).then(sessionData => {
+    if(sessionData == null ) {
+      // init session value in redis
+      set(req.sessionId, {});
+      // set session
+      req.session = {}; 
 
-  // deal with post data by promise object
-  getPostDataHandler(req).then(postdata => {
+    } else {
+      // set session
+      req.session = sessionData;
+    }
+    console.log('req.session is: ', req.session);
+
+    // deal with post data by promise object
+    return getPostDataHandler(req);
+  })
+
+  .then(postdata => {
 
     req.body = postdata;
     /**

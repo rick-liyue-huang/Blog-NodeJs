@@ -148,4 +148,39 @@ cookie太小，
 cookie中存储userid, server端对应username
 session: 即server端存储的用户信息
 
+目前 session 直接是js变量，放到了nodejs进程内存中
+第一进程内存有限，访问量过大，内存暴增怎么办
+第二正式线上运行是多进程的，进程之间内存无法共享
+
+解决方案 redis
+web server最常用的缓存数据库，数据存在内存中
+相比于mysql,访问速度快
+但是成本高，可存储的数据量更小
+
+解决方案
+将web server 和 redis 拆分为两个单独的服务
+双方都是独立的可以扩展的 可以扩展成集群
+mysql也是一个单独的服务
+
+session 适合 redis
+session 访问频繁，对性能要求很高
+session 可以不考虑断点丢失数据的问题
+session 数据量不会很大 相比于 mysql
+
+网站数据不适合用redis
+操作频率不是太高
+断点不能丢失，必须保留
+数据量很大，成本高
+
+run 'brew install redis'
+then 
+'redis-server'
+'redis-cli'
+
+in 'redis-cli' terminal
+set key value
+get key
+keys *
+del key
+
 
