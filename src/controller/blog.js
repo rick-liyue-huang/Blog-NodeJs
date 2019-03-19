@@ -1,18 +1,16 @@
 
 const { exec } = require('../db/mysql');
 
-const getListHandler = (author, keyword) => {
+const getBlogListHandler = (author, keyword) => {
 
   // return genuine data
   let sql = `select * from blogs where 1=1 `
   if(author) {
     sql += `and author='${author}' `
   }
-
   if(keyword) {
     sql += `and title like '%${keyword}%' `
   }
-
   sql += `order by createtime desc;`
 
   // return promise
@@ -40,14 +38,7 @@ const getListHandler = (author, keyword) => {
 
 };
 
-const getDetailHandler = (id) => {
-  // return {
-  //   id: 1,
-  //   title: 'title A',
-  //   content: 'content A',
-  //   createTime: 1552615080565,
-  //   author: 'rick'
-  //  }
+const getBlogDetailHandler = (id) => {
 
   // query sentence return array, so need to transfer to object
   const sql = `select * from blogs where id='${id}';`
@@ -55,15 +46,21 @@ const getDetailHandler = (id) => {
     return rows[0];
   });
 
+  /*
+  return {
+    id: 1,
+    title: 'title A',
+    content: 'content A',
+    createTime: 1552615080565,
+    author: 'rick'
+   }
+   */
+
 };
 
 // create new blog
-const newBlogHandler = (blogData = {}) => {
-  // blog data is blog object contain title content
-  // console.log('new blog data...', blogData);
-  // return {
-  //   id: 3, // means that new blog will append blog list
-  // }
+const postBlogNewHandler = (blogData = {}) => {
+  
   const title = blogData.title;
   const content = blogData.content;
   const author = blogData.author;
@@ -78,15 +75,17 @@ const newBlogHandler = (blogData = {}) => {
     return {
       id: insertData.insertId
     }
-  })
+  });
+
+  // blog data is blog object contain title content
+  // console.log('new blog data...', blogData);
+  // return {
+  //   id: 3, // means that new blog will append blog list
+  // }
 }
 
 // update one blog
-const updateBlogHandler = (id, blogData = {}) => {
-  // id is the updated blog id
-  // blog data is blog object contain title content
-  // console.log('update blog data...', id, blogData);
-  // return true;
+const postBlogUpdateHandler = (id, blogData = {}) => {
 
   const title = blogData.title;
   const content = blogData.content;
@@ -102,12 +101,15 @@ const updateBlogHandler = (id, blogData = {}) => {
     }
     return false
   });
+
+  // id is the updated blog id
+  // blog data is blog object contain title content
+  // console.log('update blog data...', id, blogData);
+  // return true;
 };
 
 // delete blog
-const delBlogHandler = (id, author) => {
-  // console.log('delete blog data...', id);
-  // return true
+const postBlogDelHandler = (id, author) => {
 
   const sql = `delete from blogs where id=${id} and author='${author}';`
   return exec(sql).then(deleteData => {
@@ -116,13 +118,16 @@ const delBlogHandler = (id, author) => {
       return true;
     }
     return false
-  })
+  });
+
+  // console.log('delete blog data...', id);
+  // return true
 }
 
 module.exports = {
-  getListHandler,
-  getDetailHandler,
-  newBlogHandler,
-  updateBlogHandler,
-  delBlogHandler
+  getBlogListHandler,
+  getBlogDetailHandler,
+  postBlogNewHandler,
+  postBlogUpdateHandler,
+  postBlogDelHandler
 };

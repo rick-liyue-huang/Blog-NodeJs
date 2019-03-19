@@ -1,36 +1,40 @@
 
-const { loginCheck } = require('../controller/user');
-const { SuccessModel, ErrorModel } = require('../model/resModel');
+const {
+  SuccessModel,
+  ErrorModel
+} = require('../model/resModel');
+const { postUserLoginHandler } = require('../controller/user'); 
 
 const userRouterHandler = (req, res) => {
   
-  const method = req.method;
-  // const url = req.url;
-  // const path = url.split('?')[0];
-
-  // login user
-  if(method === 'POST' && req.path === '/api/user/login') {
+  if(req.method === 'POST' && req.path === '/api/user/login') {
+    
     const { username, password } = req.body;
-    const result = loginCheck(username, password);
-
-    return result.then(data => {
-      if(data.username) {
+    const loginResult = postUserLoginHandler(username, password);
+    return loginResult.then(loginData => {
+      if(loginData.username) {
         return new SuccessModel();
+      } else {
+        return new ErrorModel('login fail');
       }
-      return new ErrorModel('login fail');
     })
 
-    // if(result) {
-    //   return new SuccessModel();
-    // }
-    // else {
-    //   return new ErrorModel('login fail');
-    // }
-    
-    // return {
-    //   msg: 'this is post user login interface'
-    // }
+    /*
+    const { username, password } = req.body;
+    const userData = postUserLoginHandler(username, password);
+    if(userData) {
+      return new SuccessModel(userData);
+    } else {
+      return new ErrorModel('login fail');
+    }
+    */
+
+    /*
+    return {
+      msg: 'user'
+    }
+    */
   }
-}
+};
 
 module.exports = userRouterHandler;

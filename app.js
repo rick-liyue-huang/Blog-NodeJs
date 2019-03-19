@@ -73,34 +73,36 @@ const userRouterHandler = require('./src/router/user');
      * here notice that req.body can be null 
      *  */ 
 
-    //  const blogData = blogRouterHandler(req, res);
-    //  if(blogData) {
-    //    res.end(JSON.stringify(blogData));
-    //    return;
-    //  }
-
-     const blogResult = blogRouterHandler(req, res);
-     if(blogResult) {
+    /*
+    const blogData = blogRouterHandler(req, res);
+    if(blogData) {
+      res.end(JSON.stringify(blogData));
+      return
+    }
+    */
+    
+    const blogResult = blogRouterHandler(req, res);
+    if(blogResult) {
       blogResult.then(blogData => {
-        res.end(JSON.stringify(blogData))
-      })
-      return;
-     }
+        res.end(JSON.stringify(blogData));
+      });
+      return
+    }
 
-     const userResult = userRouterHandler(req, res);
-     if(userResult) {
-       userResult.then(userData => {
-         res.end(JSON.stringify(userData));
-       });
-       return;
-     }
-     
-
-    //  const userData = userRouterHandler(req, res);
-    //  if(userData) {
-    //    res.end(JSON.stringify(userData));
-    //    return;
-    //  }
+    /*
+    const userData = userRouterHandler(req, res);
+    if(userData) {
+      res.end(JSON.stringify(userData));
+      return
+    }
+    */
+   const userResult = userRouterHandler(req, res);
+   if(userResult) {
+     userResult.then(userData => {
+       res.end(JSON.stringify(userData));
+     });
+     return
+   }
 
      res.writeHead(404, {"content-type": "text/plain"});
      res.end('404 Not Found\n');
