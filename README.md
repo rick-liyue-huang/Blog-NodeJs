@@ -183,4 +183,33 @@ get key
 keys *
 del key
 
+登录功能依赖 cookie，必须用浏览器来联调
+cookie跨域不共享，前端和server必须同域
+ngnix
 
+
+npm i -g http-server
+http-server -p 8001
+
+ngnix
+高性能web服务器，开源免费
+一般用于做静态服务，负载均衡
+还有免费代理
+
+brew install nginx
+
+config file
+/usr/local/etc/nginx/nginx.conf
+
+
+test:
+nginx -t
+
+start:
+nginx
+
+restart
+nginx -s reload
+
+stop:
+nginx -s stop

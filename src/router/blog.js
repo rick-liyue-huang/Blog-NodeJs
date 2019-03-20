@@ -29,8 +29,16 @@ const blogRouterHandler = (req, res) => {
 
   if(method === 'GET' && req.path === '/api/blog/list') {
 
-    const author = req.query.author || '';
+    let author = req.query.author || '';
     const keyword = req.query.keyword || '';
+
+    if(req.query.isadmin) {
+      const loginCheckResult = loginCheck(req);
+      if(loginCheckResult) {
+        return loginCheckResult
+      }
+      author = req.session.username;
+    }
 
     const listResult = getBlogListHandler(author, keyword);
     // listResult is promise object
@@ -83,7 +91,7 @@ const blogRouterHandler = (req, res) => {
     const loginCheckResult = loginCheck(req);
     if(loginCheckResult) {
       // unlogin
-      return loginCheck
+      return loginCheckResult
     }
 
     // req.body.author = 'newauthor'; // fake author
@@ -116,7 +124,7 @@ const blogRouterHandler = (req, res) => {
     const loginCheckResult = loginCheck(req);
     if(loginCheckResult) {
       // unlogin
-      return loginCheck
+      return loginCheckResult
     }
     
     const updateResult = postBlogUpdateHandler(id, req.body);
@@ -149,7 +157,7 @@ const blogRouterHandler = (req, res) => {
     const loginCheckResult = loginCheck(req);
     if(loginCheckResult) {
       // unlogin
-      return loginCheck
+      return loginCheckResult
     }
 
     // const author = 'rick';
