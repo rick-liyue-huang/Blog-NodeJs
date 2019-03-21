@@ -92,26 +92,113 @@ con.end();
 
 // redis test
 
-const redis = require('redis');
+// const redis = require('redis');
 
-// create client
-const redisClient = redis.createClient(6379, '127.0.0.1');
-redisClient.on('error', err => {
-  console.error(err);
-});
+// // create client
+// const redisClient = redis.createClient(6379, '127.0.0.1');
+// redisClient.on('error', err => {
+//   console.error(err);
+// });
 
-// test
-redisClient.set('myname', 'hahaha', redis.print);
-// this async
-redisClient.get('myname', (err, val) => {
-  if(err) {
-    console.log(err);
-    return;
-  }
-  console.log('val ', val);
+// // test
+// redisClient.set('myname', 'hahaha', redis.print);
+// // this async
+// redisClient.get('myname', (err, val) => {
+//   if(err) {
+//     console.log(err);
+//     return;
+//   }
+//   console.log('val ', val);
 
-  // quit
-  redisClient.quit();
+//   // quit
+//   redisClient.quit();
 
-});
+// });
 
+// file test - log
+
+// const fs = require('fs');
+// const path = require('path');
+
+// const fileName = path.resolve(__dirname, 'files/data.txt');
+
+// read file
+// fs.readFile(fileName, (err, data) => {
+//   if(err) {
+//     console.log(err);
+//     return
+//   }
+//   console.log(data.toString());
+// });
+
+// const content = `this is written content\n`;
+// const opt = {
+//   flag: 'a'  // append write, overwrite use 'w'
+// };
+
+// write file
+// fs.writeFile(fileName, content, opt, (err) => {
+//   if(err) {
+//     console.log(err)
+//   }
+// });
+
+// 判断文件是否存在
+// fs.exists(fileName, (exist) => {
+//   console.log('exist', exist);
+// });
+
+// const http = require('http');
+// const server = http.createServer((req, res) => {
+//   if(req.method === 'POST') {
+//     req.pipe(res); // process.stdin.pipe(process.stdout)
+//   }
+// });
+// server.listen(8000); // output from input
+
+
+// stream test
+// stdin stdout
+// process.stdin.pipe(process.stdout); // similar as upper example
+
+// const http = require('http');
+// http.createServer((req, res) => {
+//   if(req.method === 'POST') {
+//     req.pipe(res);
+//   }
+// }).listen(8000)
+
+// use stream to file
+
+// const fs = require('fs');
+// const path = require('path');
+
+// const fileName1 = path.resolve(__dirname, 'files/data.txt');
+// const fileName2 = path.resolve(__dirname, 'files/databack.js');
+
+// const readStream = fs.createReadStream(fileName1);
+// const writeStream = fs.createWriteStream(fileName2);
+
+// readStream.pipe(writeStream);
+// readStream.on('data', chunk => {
+//   console.log(chunk.toString());
+// });
+// readStream.on('end', () => {
+//   console.log('copy done');
+// });
+
+
+// readfile and show in screen
+
+// const http = require('http');
+// const fs = require('fs');
+// const path = require('path');
+
+// const fileName1 = path.resolve(__dirname, 'files/data.txt');
+// const server = http.createServer((req, res) => {
+//   if(req.method === 'GET') {
+//     const readStream = fs.createReadStream(fileName1);
+//     readStream.pipe(res);
+//   }
+// });
+// server.listen(8000);

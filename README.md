@@ -213,3 +213,57 @@ nginx -s reload
 
 stop:
 nginx -s stop
+
+日志：
+
+系统没有日志，就等于人没有眼睛 qps query per second
+第一： 访问日志 accees log server 最重要的日志
+第二： 自定义日志 包括自定义事件，错误记录等
+
+nodejs stream
+日志功能开发和使用
+日志文件拆分，日志内容分析
+
+日志要存放到文件中
+为何不存储到mysql 中
+为何不存储到redis 中
+
+因为文件很大，所以放到硬盘中，mysql 推荐存储 表结构数据
+
+
+I/O 网络I 和 文件IO
+文件IO 就是 readFile 和 writeFile  
+
+相比较于CPU 计算和内存读写，IO 的突出特点就是慢
+如何在有限的硬盘资源下提高IO的操作效率
+
+所以用到 stream
+标准输入输出： pipe就是管道符合水流管道模型
+process.stdin.pipe(process.stdout)
+
+日志内容会慢慢积累，放在一个文件中不好处理
+按时间分日志文件 2019-02-10.access.log
+实现方式 linux crontab 命令 即定时任务
+
+crontab 格式 *****commond
+
+分钟 小时 日期 月份 星期 .sh file
+
+将 access.log 拷贝重命名为 2019-02-10.access.log
+清空access.log文件，继续积累日志
+拆分日志不需要代码
+
+run `pwd` 查看 logs directory
+
+
+run `crontab -e`
+
+run `* 0 * * * sh /Users/liyue/Documents/gitgarden/Blog-NodeJs/logs/copyA.sh` 
+
+run `crontab -l` 查看当前有哪些任务
+
+日志分析
+如针对access.log日志，分析chrome的占比
+日志是按照行存储的，一行就是一条日志
+
+使用 nodejs readline （基于stream, 效率高）
