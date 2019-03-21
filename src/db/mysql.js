@@ -24,5 +24,5 @@ function exec(sql) {
   // has to keep the con connected, to query frequently
 }
 
-module.exports = { exec };
+module.exports = { exec, escape: mysql.escape };
 

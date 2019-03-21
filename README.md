@@ -71,6 +71,7 @@ select * from users where username like '%ri%'
 select * from users where `password` like '%6%' order by id desc;
 
 SET SQL_SAFE_UPDATES=0;
+
 update users set realname='liyuehuang' where username='rick';
 delete from users where username='liyue';
 
@@ -267,3 +268,24 @@ run `crontab -l` 查看当前有哪些任务
 日志是按照行存储的，一行就是一条日志
 
 使用 nodejs readline （基于stream, 效率高）
+
+sql attack
+sql 防范： mysql.escape
+escape()
+
+xss attack
+<script>alert(document.cookie)</script>
+
+avoid xss:
+npm i --save xss
+
+xss()
+
+密码加密
+最不应该泄露的就是用户信息
+
+攻击方式： 获取用户名和密码 再去尝试登陆其他系统
+预防： 将密码加密
+
+use  crypto.js to get genPassword func
+

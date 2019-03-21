@@ -1,5 +1,7 @@
 
-const { exec } = require('../db/mysql');
+// avoid xss attack
+const xss = require('xss');
+const { exec, escape } = require('../db/mysql');
 
 const getBlogListHandler = (author, keyword) => {
 
@@ -61,15 +63,30 @@ const getBlogDetailHandler = (id) => {
 // create new blog
 const postBlogNewHandler = (blogData = {}) => {
   
-  const title = blogData.title;
-  const content = blogData.content;
-  const author = blogData.author;
+  // avoid xss attack
+  let title = xss(blogData.title);
+  console.log('title-1: ', title);
+  let content = xss(blogData.content);
+  let author = blogData.author;
   const createTime = Date.now();
 
+  // avoid sql inject attack
+  title = escape(title);
+  console.log('title-2: ', title);
+  content = escape(content);
+  author = escape(author);
+
+  // const sql = `
+  //   insert into blogs (title, content, createtime, author)
+  //   values ('${title}', '${content}', ${createTime}, '${author}');
+  // `;
+
+  // avoid sql inject attack
   const sql = `
     insert into blogs (title, content, createtime, author)
-    values ('${title}', '${content}', ${createTime}, '${author}');
-  `
+    values (${title}, ${content}, ${createTime}, ${author});
+  `;
+
   return exec(sql).then(insertData => {
     console.log('insertData is ', insertData);
     return {
@@ -87,8 +104,8 @@ const postBlogNewHandler = (blogData = {}) => {
 // update one blog
 const postBlogUpdateHandler = (id, blogData = {}) => {
 
-  const title = blogData.title;
-  const content = blogData.content;
+  const title = xss(blogData.title);
+  const content = xss(blogData.content);
 
   const sql = `
     update blogs set title='${title}', content='${content}' where id=${id}
