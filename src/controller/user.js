@@ -1,13 +1,25 @@
 
+const xss = require('xss');
 // import mysql exec func
-const  { exec } = require('../db/mysql');
+const  { exec, escape } = require('../db/mysql');
+// import crypto method
+const  { genPassword } = require('../utils/cryp');
 
 const handlePostLogin = (username, password) => {
+
+  // avoid xss attack
+  username = xss(username);
+  password = genPassword(password);
+  password = xss(password);
   
-  // get data from users database
+  // avoid sql inject attack
+  username = escape(username);
+  password = escape(password);
+
+  // get data from users database; delte '' for escape in sql sentence
   const sql = `
     select username, realname from users 
-    where username='${username}' and password='${password}';`;
+    where username=${username} and password=${password};`;
   return exec(sql).then(rows => {
     return rows[0] || {}
   });

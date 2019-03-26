@@ -1,6 +1,7 @@
 
+const xss = require('xss');
 // import exec func to get real data
-const { exec } = require('../db/mysql');
+const { exec, escape } = require('../db/mysql');
 
 // deal with data exec on special router
 const handleGetBlogList = (author, keyword) => {
@@ -60,14 +61,18 @@ const handlePostBlogNew = (blogData={}) => {
   console.log('blogData: ', blogData);
   
   // get args from blogData (req.body)
-  const title = blogData.title;
-  const content = blogData.content;
+  let title = xss(blogData.title);
+  let content = xss(blogData.content);
   const createtime = Date.now();
-  const author = blogData.author || 'rick';
+  let author = blogData.author;
+
+  title = escape(title);
+  content = escape(content);
+  author = escape(author);
 
   const sql = `
     insert into blogs (title, content, createtime, author)
-    values ('${title}', '${content}', '${createtime}', '${author}');`;
+    values (${title}, ${content}, ${createtime}, ${author});`;
   return exec(sql).then(inserData => {
     if(inserData.insertId) {
       return {
@@ -84,10 +89,13 @@ const handlePostBlogNew = (blogData={}) => {
 const handlePostBlogUpdate = (id, blogData={}) => {
   console.log('blogData: ', id, blogData);
 
-  const title = blogData.title;
-  const content = blogData.content;
+  let title = xss(blogData.title);
+  let content = xss(blogData.content);
+
+  title = escape(title);
+  content = escape(content);
   const sql = `
-    update blogs set title='${title}', content='${content}' where id=${id};`;
+    update blogs set title=${title}, content=${content} where id=${id};`;
   return exec(sql).then(updateData => {
     // notice updateData
     console.log('updateData: ', updateData);

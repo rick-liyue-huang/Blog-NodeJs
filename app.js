@@ -5,12 +5,14 @@ const handleBlogRouter = require('./src/router/blog');
 const handleUserRouter = require('./src/router/user');
 // import redis method
 const { set, get } = require('./src/db/redis');
+// import log method
+const { access } = require('./src/utils/log');
 
 // set cookie expires time
 const setCookieExpire = () => {
   let d = new Date();
-  d.setTime(d.getTime() + (24*60*60*1000));
-  return d.toGMTString();
+  d.setTime(d.getTime() + (24 * 60 * 60 * 1000));
+  return d.toGMTString()
 }
 
 // seperate one func to deal with 'POST' method
@@ -46,6 +48,8 @@ const handlePostData = (req) => {
 // deal with server logic application
 const serverHandler = (req, res) => {
 
+  access(`${req.method} -- ${req.url} -- ${req.headers['user-agent']} -- ${Date.now()}`);
+
   res.setHeader('content-type', 'application/json');
   // get url para
   let url = req.url;
@@ -53,7 +57,7 @@ const serverHandler = (req, res) => {
   req.query = querystring.parse(url.split('?')[1]);
 
   /**
-   * decompose req.cookie
+   * decompose req.cookie: from string to object
    *  */ 
   req.cookie = {};
   const cookieString = req.headers.cookie || '';
@@ -66,6 +70,7 @@ const serverHandler = (req, res) => {
     let val = arr[1].trim();
     req.cookie[key] = val;
   });
+  // 
   console.log('req.cookie: ', req.cookie);
 
   /**
@@ -73,30 +78,32 @@ const serverHandler = (req, res) => {
    *  */ 
   // set one flag
   let needSetCookie = false;
-  // try to get userId
+  // try to get userId from req.cookie
   let userId = req.cookie.userid;
   if(!userId) {
-    // if firstly glance page, create userId
+    // if havenot gotten userId
     needSetCookie = true;
-    userId = `${Date.now()}_${Math.random()}`;
-    // set userId key in redis sessioin
+    userId = `${Date.now()}_${Math.random()}`; // set userId
+    // store userId in redis
     set(userId, {});
   }
   // if have userId
   req.sessionId = userId;
   get(req.sessionId).then(sessionData => {
     if(sessionData == null) {
+      // if have userId but not sessionData
+      // store req.sessionId in redis
       set(req.sessionId, {});
-      req.session = {};
+      req.session = {}; // set req.session as {}
+
     } else {
       req.session = sessionData;
     }
 
-    console.log('req.session: ', req.session);
+    // so in redis: req.sessionId => req.session
+    console.log('req.session in app.js: ', req.session);
 
-    // notice set method return promise
-    return handlePostData(req)
-
+    return handlePostData(req); // return promise
   })
 
 
