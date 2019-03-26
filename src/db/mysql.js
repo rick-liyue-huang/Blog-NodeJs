@@ -1,28 +1,27 @@
 
 const mysql = require('mysql');
+// import mysql config
 const { MYSQL_CONFIG } = require('../config/db');
 
-// create connection object
-const con = mysql.createConnection(MYSQL_CONFIG);
-
+// create connection
+const connection = mysql.createConnection(MYSQL_CONFIG);
 // start connect
-con.connect();
+connection.connect();
 
-// execute sql function
-function exec(sql) {
+const exec = (sql) => {
+  // this is one promise object
   const promise = new Promise((resolve, reject) => {
-    con.query(sql, (err, result) => {
+    // deal with sql sentence
+    connection.query(sql, (err, res) => {
       if(err) {
         reject(err);
         return
       }
-      resolve(result);
+      resolve(res);
     });
   });
-  return promise;
 
-  // has to keep the con connected, to query frequently
+  return promise;
 }
 
-module.exports = { exec, escape: mysql.escape };
-
+module.exports = { exec };

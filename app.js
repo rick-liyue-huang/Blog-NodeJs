@@ -1,11 +1,11 @@
 
 const querystring = require('querystring');
 // import funcs to deal with router
-const HandleBlogRouter = require('./src/router/blog');
-const HandleUserRouter = require('./src/router/user');
+const handleBlogRouter = require('./src/router/blog');
+const handleUserRouter = require('./src/router/user');
 
 // seperate one func to deal with 'POST' method
-const HandlePostData = (req) => {
+const handlePostData = (req) => {
   const promise = new Promise((resolve, reject) => {
     // if it is NOT POST method
     if(req.method !== 'POST') {
@@ -44,22 +44,42 @@ const serverHandler = (req, res) => {
   req.query = querystring.parse(url.split('?')[1]);
 
   // get postData
-  HandlePostData(req).then(postData => {
+  handlePostData(req).then(postData => {
     req.body = postData;
 
     // deal with router
+    /*
     const blogData = HandleBlogRouter(req, res);
     if(blogData) {
       res.end(JSON.stringify(blogData));
       return
     }
+    */
+  //  get promise object
+    const blogResult = handleBlogRouter(req, res);
+    if(blogResult) {
+      blogResult.then(blogData => {  // deal with resolve data
+        res.end(JSON.stringify(blogData));
+      });
+      return
+    }
 
-    const userData = HandleUserRouter(req, res);
+    /*
+    const userData = handleUserRouter(req, res);
     if(userData) {
       res.end(JSON.stringify(userData));
       return
     }
+    */
 
+    // get promise result
+    const userResult = handleUserRouter(req, res);
+    if(userResult) {
+      userResult.then(userData => {
+        res.end(JSON.stringify(userData));
+      });
+      return
+    }
     // deal with other router
     res.writeHead('404', {'Content-type': 'text/plain'});
     res.end('404 Not Found app.js \n');
