@@ -1,25 +1,23 @@
 
-// set res data model
-// data is object, message is string
+// set return data format in model
 class BaseModel {
   constructor(data, message) {
+    // compatible with one arg
     if(typeof data === 'string') {
       this.message = data;
       data = null;
       message = null;
     }
-
     if(data) {
       this.data = data;
     }
-
     if(message) {
-      this.message = message;
+      this.message = message
     }
   }
 }
 
-// create two models based on the basemodel
+// inerit from BaseModel
 class SuccessModel extends BaseModel {
   constructor(data, message) {
     super(data, message);
@@ -34,7 +32,4 @@ class ErrorModel extends BaseModel {
   }
 }
 
-module.exports = {
-  SuccessModel,
-  ErrorModel
-}
+module.exports = { SuccessModel, ErrorModel };
