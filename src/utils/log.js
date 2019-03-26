@@ -1,25 +1,23 @@
 
-// create log method
 const fs = require('fs');
 const path = require('path');
 
-// log is string, writeStream is stream
 const writeLog = (writeStream, log) => {
-  writeStream.write(log + '\n');
+  writeStream.write(log + '\n'); // key coding
 }
 
-const createWriteStream = (filename) => {
-  const fullFileName = path.join(__dirname, '../', '../', 'logs', filename);
+const createWriteStream = (fileName) => {
+  const fullFileName = path.join(__dirname, '../', '../', 'logs', fileName);
   const writeStream = fs.createWriteStream(fullFileName, {
     flags: 'a'
   });
   return writeStream;
 }
 
-const accessWrtieStream = createWriteStream('access.log');
+const accessWriteStream = createWriteStream('access.log');
 
 const access = (log) => {
-  writeLog(accessWrtieStream, log);
+  writeLog(accessWriteStream, log);
 }
 
 module.exports = { access };
