@@ -1,10 +1,9 @@
 
-// import http from node.js
+// server entry file
 const http = require('http');
 const PORT = 8000;
-// deal with server inside logic application
+// import server logic application
 const serverHandler = require('../app');
-
 // create server
 const server = http.createServer(serverHandler);
 server.listen(PORT, () => {
