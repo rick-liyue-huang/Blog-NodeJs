@@ -4,6 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// import session middleware
+const session = require('express-session');
+const redisStore = require('connect-redis')(session);
+const redisClient = require('./db/redis');
+
 const blogRouter = require('./routes/blog');
 const userRouter = require('./routes/user');
 
@@ -13,6 +18,23 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// connect session with redis
+const sessionStore = new redisStore({
+  client: redisClient
+});
+
+// decompose session
+// notice that: set middleware before set router
+app.use(session({
+  secret: 'RickHuang666',
+  cookie: {
+    path: '/', // default config
+    httpOnly: true, // default config
+    maxAge: 24 * 60 * 60 * 1000
+  },
+  store: sessionStore // put redis in session
+}));
 
 app.use('/api/blog', blogRouter);
 app.use('/api/user', userRouter);
