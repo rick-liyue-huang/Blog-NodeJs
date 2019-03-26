@@ -101,10 +101,10 @@ const handlePostBlogUpdate = (id, blogData={}) => {
   // return true;
 }
 
-const handlePostBlogDel = (id) => {
+const handlePostBlogDel = (id, author) => {
   console.log('id: ', id);
 
-  const sql = `delete from blogs where id=${id};`;
+  const sql = `delete from blogs where id=${id} and author='${author}';`;
   return exec(sql).then(delData => {
     if(delData.affectedRows > 0) {
       return true;

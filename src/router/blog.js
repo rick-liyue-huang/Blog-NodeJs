@@ -9,6 +9,18 @@ const {
   handlePostBlogDel
 } = require('../controller/blog');
 
+// check login or not
+// here req.session.username is parallel with router/user.js, 
+// which both are from set promise object
+const loginCheck = (req) => {
+  if(!req.session.username) {
+    return Promise.resolve(
+      new ErrorModel('unlogin router-blog.js')
+    )
+  }
+}
+
+
 // deal with the specail router
 const handleBlogRouter = (req, res) => {
 
@@ -17,9 +29,19 @@ const handleBlogRouter = (req, res) => {
 
   if(method === 'GET' && req.path === '/api/blog/list') {
 
-    const author = req.query.author || '';
+    let author = req.query.author || '';
     const keyword = req.query.keyword || '';
 
+    // confirm whether it is logined or not
+    if(req.query.isadmin) {
+      const loginResult = loginCheck(req);
+      if(loginResult) {
+        return loginResult
+      }
+      
+      author = req.session.username;
+    }
+    
     // get promise
     const listResult = handleGetBlogList(author, keyword);
     return listResult.then(listData => {
@@ -46,7 +68,7 @@ const handleBlogRouter = (req, res) => {
   }
 
   if(method === 'GET' && req.path === '/api/blog/detail') {
-    
+
     const detailResult = handleGetBlogDetail(id);
     return detailResult.then(detailData => {
       if(detailData.id) {
@@ -71,6 +93,12 @@ const handleBlogRouter = (req, res) => {
 
   if(method === 'POST' && req.path === '/api/blog/new') {
 
+    const loginResult = loginCheck(req);
+    if(loginResult) {
+      return loginResult;
+    }
+    // only new after login
+    req.body.author = req.session.username;
     const newResult = handlePostBlogNew(req.body);
     return newResult.then(newData => {
       if(newData) {
@@ -95,6 +123,11 @@ const handleBlogRouter = (req, res) => {
 
   if(method === 'POST' && req.path === '/api/blog/update') {
     
+    const loginResult = loginCheck(req);
+    if(loginResult) {
+      return loginResult;
+    }
+    // only update after login
     // return promise object
     const updateResult = handlePostBlogUpdate(id, req.body);
     return updateResult.then(updateData => {
@@ -120,7 +153,13 @@ const handleBlogRouter = (req, res) => {
 
   if(method === 'POST' && req.path === '/api/blog/del') {
     
-    const delResult = handlePostBlogDel(id);
+    const loginResult = loginCheck(req);
+    if(loginResult) {
+      return loginResult;
+    }
+    // only delete after login
+    const author = req.session.username;
+    const delResult = handlePostBlogDel(id, author);
     return delResult.then(delData => {
       if(delData) {
         return new SuccessModel(delData);
