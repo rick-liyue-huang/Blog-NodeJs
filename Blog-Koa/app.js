@@ -9,6 +9,9 @@ const logger = require('koa-logger')
 // import session and redis
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
+const path = require('path');
+const fs = require('fs');
+const morgan = require('koa-morgan');
 
 const blog = require('./routes/blog');
 const user = require('./routes/user');
@@ -24,11 +27,6 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-// app.use(require('koa-static')(__dirname + '/public'))
-
-// app.use(views(__dirname + '/views', {
-//   extension: 'pug'
-// }))
 
 // logger
 app.use(async (ctx, next) => {
@@ -37,6 +35,24 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 });
+
+// deal with logs
+const ENV = process.env.NODE_ENV;
+if(ENV !== 'prod') {
+  // development/test environment
+  app.use(morgan('dev', {
+    stream: process.stdout
+  }));
+} else {
+  // production environment
+  const logFileName = path.join(__dirname, 'logs', 'access.log');
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: 'a'
+  });
+  app.use(morgan('combined', {
+    stream: writeStream
+  }));
+}
 
 app.keys = ['RickHuang666'];
 app.use(session({
