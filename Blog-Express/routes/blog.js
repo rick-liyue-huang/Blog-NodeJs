@@ -18,7 +18,9 @@ router.get('/list', (req, res, next) => {
 
   // confirm whether it is logined or not
   if(req.query.isadmin) {
+    console.log('is admin'); // log
     if(req.session.username == null) {
+      console.log('is not login');
       res.json(
         new ErrorModel('unlogin blog-list')
       );

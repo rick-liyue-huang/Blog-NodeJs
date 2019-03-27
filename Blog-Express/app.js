@@ -1,8 +1,9 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const fs = require('fs');
 
 // import session middleware
 const session = require('express-session');
@@ -14,7 +15,25 @@ const userRouter = require('./routes/user');
 
 var app = express();
 
-app.use(logger('dev'));
+// config log
+const ENV = process.env.NODE_ENV;
+if(ENV !== 'prod') {
+  // development/test environment
+  app.use(logger('dev', {
+    stream: process.stdout
+  }));
+} else {
+  // production environment
+  const logFileName = path.join(__dirname, 'logs', 'access.log');
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: 'a'
+  });
+  app.use(logger('combined', {
+    stream: writeStream
+  }));
+}
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
