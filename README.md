@@ -296,3 +296,31 @@ await必须包裹在async函数里面
 async函数返回的也是promise 对象 
 try-catch 截获promise 中的reject值
 */
+
+pm2 node 进程管理工具
+
+npm i -g pm2
+
+pm2 list
+
+pm2 start... 
+
+pm2 restart <AppName>/<id>
+
+pm2 stop <AppName>/<id> pm2 delete <AppName>/<id>
+
+pm2 info <AppName>/<id>
+pm2 log <AppName>/<id>
+
+pm2 monit <AppName>/<id>
+
+pm2.config.json to config pm2
+
+使用多进程
+操作系统会限制一个进程的内存
+内存：单进程无法充分利用全部内存
+单进程无法充分利用cpu的多核
+
+
+关于运维
+pm2 的核心价值：进程守护，多进程启动，线上日志记录
