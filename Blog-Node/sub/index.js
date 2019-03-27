@@ -202,3 +202,14 @@ con.end();
 //   }
 // });
 // server.listen(8000);
+
+const getFileContent = (filename) => {
+  const promise = new Promise((resolve, reject) => {
+
+  });
+  return promise
+}
+
+async function readFileData () {
+
+}
