@@ -1,7 +1,8 @@
 
-## Blog in Node.js (Express and Koa2)
+# Blog in Node.js (Express and Koa2)
 
-### Introduction
+
+## Introduction
 
 Here I will use pure Node.js, Express.js and Koa2.js to complete the blog project, which only only focus on the server-end. This project includes four directories, which are Blog-Node, Blog-Express, Blog-Koa and Front-End-View, respectively. 
 
@@ -14,20 +15,21 @@ Thirdly, I build one basic front-end project, let it get the data in realtime fr
 The purpose of project is to familiar with the node server working principle, and can use kinds of skills masterly to satisfy with customer needs.
 
 
-### Tech Proposal
+## Tech Proposal
 
-- 1. Create Server by node.js;
-- 2. Create database by MySQL datbase;
-- 3. Create Front-end view by jquery and ajax;
-- 4. Establish connection between server and database;
-- 5. Create Redis for storing session;
-- 6. Use nginx to reverse proxy the server and front end;
-- 7. Create methods to avoid attacks and record the logs;
-- 8. Use pm2 in 'prod' environment.
+1. Create Server by node.js;
+2. Create database by MySQL datbase;
+3. Create Front-end view by jquery and ajax;
+4. Establish connection between server and database;
+5. Create Redis for storing session;
+6. Use nginx to reverse proxy the server and front end;
+7. Create methods to avoid attacks and record the logs;
+8. Use pm2 in 'prod' environment.
 
-### Project Process
 
-#### Pure node.js
+## Project Process
+
+### Pure node.js
 
 In this porject, I firstly create the completed server by the pure node.js and query the data from mySQL database, and let front end get data from database through server. 
 
@@ -42,4 +44,22 @@ In this blog project, I will use some existed user whose username and password s
 Security is always the utmost important for network, so I use XSS module and 'escape' method to avoid these attacks, and also use *'crypto'* module to encrypt the password existed in *'cryp.js'* in *'utils'* directory. Record the logs can be easily for the staff to know how the server works well or what happend after the server broke down. I also create method in *'log.js'* in *'utils'* to record the logs. I can select different methods to record logs in 'dev' and 'prod' environment. pm2 is a process management tool, I will use it in 'prod' environment.
 
 After all the process to complete the blog project, I master the basic skills and also know the intrinsic knowledge how to build one self-contained node server project. 
+
+
+### Express.js 
+
+In the Blog-Express directory, I create the same blog project, in which I use express.js for server and same Front-End-View pages. Here I still use *'controller'*, *'model'*, *'utils'*, *'config'* and *'db'* directories.
+
+Because Express already mixin with some modules, so I donot need to create all the fuctions myself, I can import 'express-session' and 'connect-redis' to create session and store it in redis. I also can use 'morgan' to record logs, all of which can be applied in *'app.js'*. Express can use middleware to create the chain programming, so I create the *'loginCheck.js'* in *'middleware'* directory, which can be used in methods in 'controller' directory to confirm the user login or not. 
+
+
+### Koa2.js
+
+Similar as Express.js project, I still can use some coding in *'controller'*, *'model'*, *'utils'*, *'config'* and *'db'* directories. But Koa2 use **'async'** and **'await'** to void callback hell, so I modify the methods in methods in *'controller'* *'router'* directories. I also import 'koa-generic-session', 'koa-redis', 'koa-morgan' to create session and store it in redis.
+
+All of the three projects I use nginx to connect server-end and front-end by avoiding cross-domain problems. and also use pm2 to manage node server process in environments.
+
+
+## Project Display
+
 
