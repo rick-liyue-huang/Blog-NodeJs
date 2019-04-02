@@ -18,9 +18,12 @@ The purpose of project is to familiar with the node server working principle, an
 
 1. Create Server by node.js;
 2. Create database by MySQL datbase;
+3. Create Front-end view by jquery and ajax;
 3. Establish connection between server and database;
-4. Let front-end get data in real time.
-
+4. Create Redis for storing session;
+5. Use nginx to reverse proxy the server and front end;
+6. Create methods to avoid attacks and record the logs;
+7. 
 
 ### Project Process
 
@@ -28,7 +31,7 @@ The purpose of project is to familiar with the node server working principle, an
 
 In this porject, I firstly create the completed server by the pure node.js and query the data from mySQL database, and let front end get data from database through server. 
 
-I create server in file of 'bin/www.js', in which I import server inner logic application funcion 'serverHandler' in 'app.js'; while in the 'app.js' file, I deal with post method by one seperated function named 'handlePostData', and deal with router of 'blog' and 'user' by two external functions named 'handleBlogRouter' and 'handleUserRouter'. In one word, 'serverHandler' in 'App.js' is the general function to realize the server logic application, and all details will bring out to 'handleBlogRouter' and 'handleUserRouter', in 'router' directory respectively.
+I create server in file of *'bin/www.js'*, in which I import server inner logic application funcion 'serverHandler' in 'app.js'; while in the 'app.js' file, I deal with post method by one seperated function named 'handlePostData', and deal with router of *'blog'* and 'user' by two external functions named 'handleBlogRouter' and 'handleUserRouter'. In one word, 'serverHandler' in 'App.js' is the general function to realize the server logic application, and all details will bring out to 'handleBlogRouter' and 'handleUserRouter', in 'router' directory respectively.
 
 In the router directory, the server will confirm the url by 'req.method' and 'req.path' display the different contents. On the specific url and method, the server will call the specific metod created in 'controller' directory. Normally front-end and server-end communicate data by some existed format, so I create some specific mode to store these format in 'model' directory.
 
@@ -37,4 +40,6 @@ In these controller methods, I will trigger sql language exported, from 'mysql.j
 In this blog project, I will use some existed user whose username and password stored in mysql database to login the blog and create, update and delete his own blog articles, so I will use cookie and sessioin to store the username infomation. Because of the limitation of session, I will store the sessions on redis server, so that all node server processes can visit them. I create the 'req.cookie' and 'req.session' in 'app.js', and store the 'req.session' in redis by 'redis.js' in 'db' directory.
 
 Security is always the utmost important for network, so I use XSS module and 'escape' method to avoid these attacks, and also use 'crypto' module to encrypt the password existed in 'cryp.js' in 'utils' directory. Record the logs can be easily for the staff to know how the server works well or what happend after the server broke down. I also create method in 'log.js' in 'utils' to record the logs. I can select different methods to record logs in 'dev' and 'prod' environment. pm2 is a process management tool, I will use it in 'prod' environment.
+
+After all the process to complete the blog project, I master the basic skills and also know the intrinsic knowledge how to build one self-contained node server project. 
 
