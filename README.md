@@ -1,11 +1,17 @@
 
-## Blog in Node.js
+## Blog in Node.js (Express and Koa2)
 
 ### Introduction
-In this project, I use Node.js to create one server supporting one blog. It contains 'Home page', 'Author page', 'Detail page', 'Login page', 'management center', 'new page', 'edit page'.
 
-On the first part, I use only pure node.js to create the server connecting with mySQL database, and let the front-end to get the data in real time.
+Here I will use pure Node.js, Express.js and Koa2.js to complete the blog project, which only only focus on the server-end. This project includes four directories, which are Blog-Node, Blog-Express, Blog-Koa and Front-End-View, respectively. 
 
+Firstly, I use pure Node.js to create the blog server, in order to dig the intrinsic node-server knowlodge, where I mix in many necessary skills, including mysql database to store data, redis to store session, nginx to cross front-end and server-end, log to recorde logs, xss and escape to avoid attack, crypto to encrypt password, pm2 to manage node process.
+
+Secondly, I will reuse some coding in Express and Koa2 framework to completely quickly the blog project again by some existed modules known how to work before in the pure node project.
+
+Thirdly, I build one basic front-end project, let it get the data in realtime from backend through ajax and jquery simply.
+
+The purpose of project is to familiar with the node server working principle, and can use kinds of skills masterly to satisfy with customer needs.
 
 
 ### Tech Proposal
@@ -16,15 +22,19 @@ On the first part, I use only pure node.js to create the server connecting with 
 4. Let front-end get data in real time.
 
 
-### Process
+### Project Process
 
 #### Pure node.js
 
 In this porject, I firstly create the completed server by the pure node.js and query the data from mySQL database, and let front end get data from database through server. 
 
-I create server in file of 'bin/www.js', in which I import server inner logic application funcion 'serverHandler' in 'app.js'; while in the 'app.js' file, I deal with post method by one seperated function named 'getPostDataHandler', and deal with router of 'blog' and 'user' by two external functions named 'blogRouterHandler' and 'userRouterHandler' respectively.
+I create server in file of 'bin/www.js', in which I import server inner logic application funcion 'serverHandler' in 'app.js'; while in the 'app.js' file, I deal with post method by one seperated function named 'handlePostData', and deal with router of 'blog' and 'user' by two external functions named 'handleBlogRouter' and 'handleUserRouter'. In one word, 'serverHandler' in 'App.js' is the general function to realize the server logic application, and all details will bring out to 'handleBlogRouter' and 'handleUserRouter', in 'router' directory respectively.
 
-In order to control router easily, I create two directories, named 'model' and 'controller', and in the 'model/resModel.js' I create the response format,which including 'errorno' property, while in 'controller/blog.js' and 'controller/user.js' I create some controllers to return some fixed data based on the given router.
+In the router directory, the server will confirm the url by 'req.method' and 'req.path' display the different contents. On the specific url and method, the server will call the specific metod created in 'controller' directory. Normally front-end and server-end communicate data by some existed format, so I create some specific mode to store these format in 'model' directory.
+
+In these controller methods, I will trigger sql language to communicate with mysql database to get data in realtime, after which I will return these data in assigned format on the front-end.
+
+
 
 
 node.js deal with http
