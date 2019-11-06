@@ -73,4 +73,10 @@ We also need to use redis and nginx, I will run `brew install redis` and run `br
 
 ## One More word
 
+从输入地址到返回内容：
+DNS解析，建立TCP连接，发送HTTP请求
+server接收到HTTP请求，处理，并返回
+客户端接收到返回数据，处理数据，如渲染页面执行js
+
+
 
