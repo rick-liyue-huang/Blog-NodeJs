@@ -1,9 +1,14 @@
 
 const { SuccessModel, ErrorModel } = require('../model/resModel');
-const { getListHandler, getDetailHandler } = require('../controllers/blog');
+const { getListHandler, 
+  getDetailHandler, 
+  postNewHandler,
+  postUpdateHandler,
+  postDelHandler } = require('../controllers/blog');
 
 const handleBlogRouter = (req, res) => {
   const method = req.method;
+  const id = req.query.id;
 
   // get blog list
   if('GET' === method && '/api/blog/list' === req.path) {
@@ -22,7 +27,6 @@ const handleBlogRouter = (req, res) => {
     //   msg: 'detail'
     // }
 
-    const id = req.query.id;
     const detailData = getDetailHandler(id);
     return new SuccessModel(detailData);
     
@@ -30,24 +34,43 @@ const handleBlogRouter = (req, res) => {
 
   // post new blog
   if('POST' === method && '/api/blog/new' === req.path) {
-    return {
-      msg: 'new'
-    }
+    // return {
+    //   msg: 'new'
+    // }
+    // const blogData = req.body;
+    const newData = postNewHandler(req.body);
+    return new SuccessModel(newData);
+
   }
 
   // post update blog
   if('POST' === method && '/api/blog/update' === req.path) {
-    return {
-      msg: 'update'
+    // return {
+    //   msg: 'update'
+    // }
+    const updateData = postUpdateHandler(id, req.body);
+    if(updateData) {
+      return new SuccessModel(updateData);
+    } else {
+      return new ErrorModel('no update');
     }
+
   }
 
   // post delete blog
   if('POST' === method && '/api/blog/del' === req.path) {
-    return {
-      msg: 'delete'
+    // return {
+    //   msg: 'delete'
+    // }
+    const delData = postDelHandler(id);
+    if(delData) {
+      return new SuccessModel(delData);
+    } else {
+      return new ErrorModel('un deleted');
     }
   }
+
+  
 }
 
 module.exports = handleBlogRouter;

@@ -29,7 +29,28 @@ const getDetailHandler = (id) => {
   }
 }
 
+const postNewHandler = (blogData = {}) => {
+  // blogData is blog object, containing title, content...
+  console.log('blogData: ', blogData);
+  return {
+    id: 3
+  }
+}
+
+const postUpdateHandler = (id, blogData = {}) => {
+  console.log(id, blogData);
+  return true;
+}
+
+const postDelHandler = id => {
+  console.log(id);
+  return true;
+}
+
 module.exports = {
   getListHandler,
   getDetailHandler,
+  postNewHandler,
+  postUpdateHandler,
+  postDelHandler,
 };
