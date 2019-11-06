@@ -78,5 +78,30 @@ DNS解析，建立TCP连接，发送HTTP请求
 server接收到HTTP请求，处理，并返回
 客户端接收到返回数据，处理数据，如渲染页面执行js
 
+database:
 
+show databases;
 
+use myblog;
+
+show tables
+
+insert into users (username, `password`, realname) values ('rick', '666', 'huangliyue');
+
+select * from users; 
+
+select * from users where username='rick'; 
+
+select id from users where username like '%e%';
+
+select * from users order by id desc;
+
+update users set realname='liyue' where id=1;
+
+SET SQL_SAFE_UPDATES=0;
+
+delete from users where username='rick';
+
+select * from users where state<>0;
+
+alter user 'root'@'localhost' identified with mysql_native_password by 'moon978329';

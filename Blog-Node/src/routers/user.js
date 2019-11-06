@@ -10,13 +10,20 @@ const handleUserRouter = (req, res) => {
     // return {
     //   msg: 'login'
     // }
+
     const { username, password } = req.body;
-    const loginData = postLoginHandler(username, password);
-    if(loginData) {
-      return new SuccessModel(loginData);
-    } else {
-      return new ErrorModel('un login');
-    }
+    // const loginData = postLoginHandler(username, password);
+    // if(loginData) {
+    //   return new SuccessModel(loginData);
+    // } else {
+    //   return new ErrorModel('un login');
+    // }
+
+    const result = handleUserRouter('rick', '666');
+    // console.log(userResult);
+    return result.then(data => {
+      return new SuccessModel();
+    })
   }
 }
 

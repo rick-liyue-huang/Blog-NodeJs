@@ -17,8 +17,12 @@ const handleBlogRouter = (req, res) => {
     // }
     const author = req.query.author || '';
     const keyword = req.query.keyword || '';
-    const listData = getListHandler(author, keyword);
-    return new SuccessModel(listData);
+    // const listData = getListHandler(author, keyword);
+    // return new SuccessModel(listData);
+    const listResult = getListHandler(author, keyword);
+    return listResult.then(listData => {
+      return new SuccessModel(listData);
+    });
   }
 
   // get blog detial
@@ -27,8 +31,13 @@ const handleBlogRouter = (req, res) => {
     //   msg: 'detail'
     // }
 
-    const detailData = getDetailHandler(id);
-    return new SuccessModel(detailData);
+    // const detailData = getDetailHandler(id);
+    // return new SuccessModel(detailData);
+
+    const detailResult = getDetailHandler(id);
+    return detailResult.then(detailData => {
+      return new SuccessModel(detailData);
+    });
     
   } 
 
@@ -38,8 +47,15 @@ const handleBlogRouter = (req, res) => {
     //   msg: 'new'
     // }
     // const blogData = req.body;
-    const newData = postNewHandler(req.body);
-    return new SuccessModel(newData);
+
+    // const newData = postNewHandler(req.body);
+    // return new SuccessModel(newData);
+
+    req.body.author = 'leo'; //will change after true login
+    const newResult = postNewHandler(req.body);
+    return newResult.then(newData => {
+      return new SuccessModel(newData);
+    });
 
   }
 
@@ -48,12 +64,21 @@ const handleBlogRouter = (req, res) => {
     // return {
     //   msg: 'update'
     // }
-    const updateData = postUpdateHandler(id, req.body);
-    if(updateData) {
-      return new SuccessModel(updateData);
-    } else {
-      return new ErrorModel('no update');
-    }
+    // const updateData = postUpdateHandler(id, req.body);
+    // if(updateData) {
+    //   return new SuccessModel(updateData);
+    // } else {
+    //   return new ErrorModel('no update');
+    // }
+
+    const updateResult = postUpdateHandler(id, req.body);
+    return updateResult.then(updateData => {
+      if(updateData) {
+        return new SuccessModel(updateData);
+      } else {
+        return new ErrorModel('un update');
+      }
+    });
 
   }
 
@@ -62,12 +87,23 @@ const handleBlogRouter = (req, res) => {
     // return {
     //   msg: 'delete'
     // }
-    const delData = postDelHandler(id);
-    if(delData) {
-      return new SuccessModel(delData);
-    } else {
-      return new ErrorModel('un deleted');
-    }
+
+    // const delData = postDelHandler(id);
+    // if(delData) {
+    //   return new SuccessModel(delData);
+    // } else {
+    //   return new ErrorModel('un deleted');
+    // }
+
+    const author = 'rick';
+    const delResult = postDelHandler(id, author);
+    return delResult.then(delData => {
+      if(delData) {
+        return new SuccessModel(delData);
+      } else {
+        return new ErrorModel('un delete');
+      }
+    });
   }
 
   
