@@ -19,11 +19,15 @@ const handleUserRouter = (req, res) => {
     //   return new ErrorModel('un login');
     // }
 
-    const result = handleUserRouter('rick', '666');
-    // console.log(userResult);
-    return result.then(data => {
-      return new SuccessModel();
-    })
+    const loginResult = postLoginHandler(username, password);
+    return loginResult.then(loginData => {
+      console.log('loginData: ------- ', loginData);
+      if(loginData.username) {
+        return new SuccessModel(loginData);
+      } else {
+        return new ErrorModel('unlogin');
+      }
+    });
   }
 }
 

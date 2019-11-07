@@ -7,11 +7,9 @@ const postLoginHandler = (username, password) => {
   // }
   // return false;
 
-  const sql = `
-  select * from users where username='rick' and password='666';`;
-
+  const sql = `select username, realname from users where username='${username}' and password='${password}';`;
   return exec(sql).then(rows => {
-    return rows[0];
+    return rows[0]
   });
 
 
