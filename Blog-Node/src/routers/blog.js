@@ -6,6 +6,13 @@ const { getListHandler,
   postUpdateHandler,
   postDelHandler } = require('../controllers/blog');
 
+// veryfy the login check
+const loginCheck = (req) => {
+  if(!req.session.username) {
+    return Promise.resolve(new ErrorModel('unlogin'));
+  } 
+}
+
 const handleBlogRouter = (req, res) => {
   const method = req.method;
   const id = req.query.id;
@@ -15,10 +22,29 @@ const handleBlogRouter = (req, res) => {
     // return {
     //   msg: 'list'
     // }
-    const author = req.query.author || '';
+    let author = req.query.author || '';
     const keyword = req.query.keyword || '';
     // const listData = getListHandler(author, keyword);
     // return new SuccessModel(listData);
+
+    if(req.query.isadmin) {
+      // admin page
+      const loginCheckResult = loginCheck(req);
+      if(loginCheckResult) {
+        // unlogin
+        return loginCheckResult;
+      }
+      author = req.session.username;
+    }
+
+
+
+
+
+
+
+
+
     const listResult = getListHandler(author, keyword);
     return listResult.then(listData => {
       return new SuccessModel(listData);
@@ -51,7 +77,14 @@ const handleBlogRouter = (req, res) => {
     // const newData = postNewHandler(req.body);
     // return new SuccessModel(newData);
 
-    req.body.author = 'leo'; //will change after true login
+    const loginCheckResult = loginCheck(req);
+    if(loginCheckResult) {
+      // unlogin
+      return loginCheckResult;
+    }
+
+    // req.body.author = 'leo'; //will change after true login
+    req.body.author = req.session.username;
     const newResult = postNewHandler(req.body);
     return newResult.then(newData => {
       return new SuccessModel(newData);
@@ -70,6 +103,12 @@ const handleBlogRouter = (req, res) => {
     // } else {
     //   return new ErrorModel('no update');
     // }
+
+    const loginCheckResult = loginCheck(req);
+    if(loginCheckResult) {
+      // unlogin
+      return loginCheckResult;
+    }
 
     const updateResult = postUpdateHandler(id, req.body);
     return updateResult.then(updateData => {
@@ -95,7 +134,14 @@ const handleBlogRouter = (req, res) => {
     //   return new ErrorModel('un deleted');
     // }
 
-    const author = 'rick';
+    const loginCheckResult = loginCheck(req);
+    if(loginCheckResult) {
+      // unlogin
+      return loginCheckResult;
+    }
+
+    // const author = 'rick';
+    const author = req.session.username;
     const delResult = postDelHandler(id, author);
     return delResult.then(delData => {
       if(delData) {

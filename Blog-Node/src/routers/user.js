@@ -15,13 +15,13 @@ const handleUserRouter = (req, res) => {
 
   const method = req.method;
   
-  if('GET' === method && '/api/user/login' === req.path) {
+  if('POST' === method && '/api/user/login' === req.path) {
     // return {
     //   msg: 'login'
     // }
 
-    // const { username, password } = req.body;
-    const { username, password } = req.query;
+    const { username, password } = req.body;
+    // const { username, password } = req.query;
     // const loginData = postLoginHandler(username, password);
     // if(loginData) {
     //   return new SuccessModel(loginData);

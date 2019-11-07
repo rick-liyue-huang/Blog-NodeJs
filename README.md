@@ -149,3 +149,36 @@ directory
  get key
  keys *
  delete key
+
+ ## 前后端同域联调
+
+ 登录功能依赖cookie，必须用浏览器来联调
+ cookie跨域不共享，前端和server必须同域
+ 用 nginx
+
+ npm run i --save -g http-server
+
+ nginx 是web服务器，开源免费
+ 一般做静态服务，负载均衡
+ 反向代理
+
+ `brew install nginx`
+
+ config file:
+ '/usr/local/etc/nginx/nginx.conf'
+ test: `nginx -t`
+ run: `nginx`
+ reload: `nginx -s reload`
+ stop: `nginx -s stop`
+
+in '/usr/local/etc/nginx/nginx.conf' 
+ ```
+location / {
+          proxy_pass  http://localhost:8001;
+}
+
+location /api/ {
+    proxy_pass  http://localhost:8000;
+    proxy_set_header Host $Host;
+}
+```
