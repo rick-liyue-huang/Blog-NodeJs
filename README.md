@@ -105,3 +105,47 @@ delete from users where username='rick';
 select * from users where state<>0;
 
 alter user 'root'@'localhost' identified with mysql_native_password by 'moon978329';
+
+## cookie session 
+
+cookie 是存储在浏览器的一段字符串
+跨域不共享
+格式如 k1=v1;k2=v2;k3=v3; 因此可以存储结构化数据
+每次发送HTTP请求，会将请求域的cookie一起发送给server
+server可以修改cookie并且可以返回给浏览器
+浏览器也可以通过javascript修改cookie
+
+cookie总存储userid,server端对应username
+session 解决的问题：
+因为暴露敏感信息，需要隐藏
+session 直接是js变量，放在nodejs的进程内存中
+第一，进程内存有限，访问朗过大，内存暴增怎么办
+第二，正式线上运行时多进程，进程之间内存无法共享
+
+web server最常用额缓存数据库，数据存放在内存中
+相比MySQL，访问速度快
+成本过高，可存储的数据量更小
+将web server和Redis拆分为两个单独的服务
+双方都是独立的，都是可扩展的
+
+session访问频繁，对性能要求高
+session可以不考虑断电丢失数据的问题
+session数据量不会太大
+
+为何网站数据不适合Redis
+操作频率不是太高
+断电不能丢失，必须保留
+数据量大，内存成本高
+
+## Redis
+
+`brew install redis`
+directory
+ '/usr/local/Cellar/redis/5.0.6: 13 files, 3.1MB'
+
+ `redis-server` `redis-cli`
+
+ set key val
+ get key
+ keys *
+ delete key
