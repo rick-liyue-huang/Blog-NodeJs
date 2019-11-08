@@ -1,4 +1,6 @@
-const { exec } = require('../db/mysql');
+
+const xss = require('xss');
+const { exec, escape } = require('../db/mysql');
 
 const getListHandler = (author, keyword) => {
   // return the fake data fristly
@@ -55,12 +57,23 @@ const postNewHandler = (blogData = {}) => {
   // return {
   //   id: 3
   // }
-  const title = blogData.title;
-  const content = blogData.content;
-  const author = blogData.author;
+  let title = blogData.title;
+  let content = blogData.content;
+  let author = blogData.author;
   const createtime = Date.now();
 
-  const sql = `insert into blogs (title, content, createtime, author) values ('${title}', '${content}', '${createtime}', '${author}');`;
+
+  title = xss(title);
+  console.log('title: ', title);
+  content = xss(content);
+  author = xss(author);
+
+  title = escape(title);
+  content = escape(content);
+  author = escape(author);
+
+  // const sql = `insert into blogs (title, content, createtime, author) values ('${title}', '${content}', '${createtime}', '${author}');`;
+  const sql = `insert into blogs (title, content, createtime, author) values (${title}, ${content}, ${createtime}, ${author});`;
 
   return exec(sql).then(insertData => {
     console.log(insertData);
@@ -74,8 +87,11 @@ const postUpdateHandler = (id, blogData = {}) => {
   console.log(id, blogData);
   // return true;
 
-  const title = blogData.title;
-  const content = blogData.content;
+  let title = blogData.title;
+  let content = blogData.content;
+
+  title = xss(title);
+  content = xss(content);
 
   const sql = `update blogs set title='${title}', content='${content}' where id='${id}';`;
 

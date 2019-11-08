@@ -1,4 +1,7 @@
-const { exec } = require('../db/mysql');
+
+const xss = require('xss');
+const { exec, escape } = require('../db/mysql');
+const { genPwd } = require('../utils/cryp');
 
 const postLoginHandler = (username, password) => {
   // use fake data
@@ -7,8 +10,20 @@ const postLoginHandler = (username, password) => {
   // }
   // return false;
 
-  const sql = `select username, realname from users where username='${username}' and password='${password}';`;
+  username = xss(username);
+  password = xss(password);
+
+  // create crypto password
+  password = genPwd(password);
+
+  username = escape(username);
+  password = escape(password);
+
+  // const sql = `select username, realname from users where username='${username}' and password='${password}';`;
+  const sql = `select username, realname from users where username=${username} and password=${password};`;
+
   return exec(sql).then(rows => {
+    console.log('sql is: ', sql);
     return rows[0] || {}
   });
 
