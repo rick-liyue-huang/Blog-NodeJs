@@ -148,7 +148,7 @@ directory
  set key val
  get key
  keys *
- delete key
+ del key
 
  ## 前后端同域联调
 
@@ -182,3 +182,27 @@ location /api/ {
     proxy_set_header Host $Host;
 }
 ```
+
+## log 
+日志放到文件中
+文件很大： 因此放到文件中
+
+
+## crontab
+定时任务
+设置定时任务， 格式 *****command
+将access.log拷贝重命名为日期.access.log
+清空access.log,继续积累日志
+
+pwd the log path
+`/Users/mac/Documents/gitgarden/Blog-NodeJs/Blog-Node/logs`
+create copy.sh
+
+`crontab -e`
+to run 
+`* 0 * * * sh /Users/mac/Documents/gitgarden/Blog-NodeJs/Blog-Node/src/utils/copy.sh`
+
+
+
+
+

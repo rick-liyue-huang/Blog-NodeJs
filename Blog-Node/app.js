@@ -3,6 +3,7 @@ const querystring = require('querystring');
 const handleBlogRouter = require('./src/routers/blog');
 const handleUserRouter = require('./src/routers/user');
 const { get, set } = require('./src/db/redis');
+const { access } = require('./src/utils/log');
 
 const getCookieExpires = () => {
   const d = new Date();
@@ -40,6 +41,10 @@ const getPostDataHandler = (req) => {
 }
 
 const serverHandler = (req, res) => {
+
+  // write log
+  access(`${req.method} -- ${req.url} -- ${req.headers['user-agent']} -- ${Date.now()}`);
+
   // set response type
   res.setHeader('Content-type', 'application/json');
 
