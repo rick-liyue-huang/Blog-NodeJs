@@ -203,6 +203,11 @@ to run
 `* 0 * * * sh /Users/mac/Documents/gitgarden/Blog-NodeJs/Blog-Node/src/utils/copy.sh`
 
 
+## new blog by koa2
+
+firstly, install koa2 with ejs by `koa2 -e Blog-New`
+
+
 
 
 
