@@ -7,9 +7,9 @@
       "node_modules",
       "logs"
     ],
-    "instances": 4,
+    "instances": 2,
     "error_file": "logs/err.log",
     "out_file": "logs/out.log",
-    "log_date_format": "DD-MM-YYYY HH:mm:ss"
+    "log_date_format": "YYY-MM-DD HH:mm:ss"
   }
 }

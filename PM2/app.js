@@ -2,7 +2,9 @@
 const http = require('http');
 
 const server = http.createServer((req, res) => {
+  // simu log
   console.log('current time: ', Date.now());
+  // simu err
   console.error('er');
 
   if(req.url === '/err') {
@@ -13,7 +15,7 @@ const server = http.createServer((req, res) => {
   res.end(
     JSON.stringify({
       errno: 0,
-      msg: 'pm2 test server 2'
+      msg: 'pm2 test server 3'
     })
   );
 })
