@@ -1,37 +1,36 @@
 
-// define mysql args
-let ENV = process.env.NODE_ENV;
+const env = process.env.NODE_ENV;
+
 let MYSQL_CONFIG;
 let REDIS_CONFIG;
 
-if(ENV === 'dev') {
+if('dev' === env) {
   MYSQL_CONFIG = {
     host: 'localhost',
-    port: 3306,
     user: 'root',
-    password: 'password',
-    database: 'myblog1'
+    password: 'moon978329',
+    port: '3306',
+    database: 'myblog'
   };
-
   REDIS_CONFIG = {
-    host: '127.0.0.1',
-    port: 6379
+    port: 6379,
+    host: '127.0.0.1'
   };
 }
 
-if(ENV === 'prod') {
+if('production' === env) {
   MYSQL_CONFIG = {
     host: 'localhost',
-    port: 3306,
     user: 'root',
-    password: 'password',
-    database: 'myblog1'
+    password: 'moon978329',
+    port: '3306',
+    database: 'myblog'
   };
-
   REDIS_CONFIG = {
-    host: '127.0.0.1',
-    port: 6379
+    port: 6379,
+    host: '127.0.0.1'
   };
 }
 
 module.exports = { MYSQL_CONFIG, REDIS_CONFIG };
+

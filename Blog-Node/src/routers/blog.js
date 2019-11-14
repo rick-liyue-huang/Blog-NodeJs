@@ -37,14 +37,6 @@ const handleBlogRouter = (req, res) => {
       author = req.session.username;
     }
 
-
-
-
-
-
-
-
-
     const listResult = getListHandler(author, keyword);
     return listResult.then(listData => {
       return new SuccessModel(listData);

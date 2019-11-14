@@ -1,23 +1,21 @@
 
-// set return data format in model
 class BaseModel {
   constructor(data, message) {
-    // compatible with one arg
-    if(typeof data === 'string') {
+    if('string' === typeof data){
       this.message = data;
       data = null;
       message = null;
     }
+
     if(data) {
       this.data = data;
     }
     if(message) {
-      this.message = message
+      this.message = message;
     }
   }
 }
 
-// inerit from BaseModel
 class SuccessModel extends BaseModel {
   constructor(data, message) {
     super(data, message);
@@ -32,4 +30,7 @@ class ErrorModel extends BaseModel {
   }
 }
 
-module.exports = { SuccessModel, ErrorModel };
+module.exports = {
+  SuccessModel,
+  ErrorModel
+};

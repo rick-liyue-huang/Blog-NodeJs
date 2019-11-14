@@ -3,10 +3,10 @@ const { ErrorModel } = require('../model/resModel');
 
 module.exports = (req, res, next) => {
   if(req.session.username) {
-    next()
+    next();
     return
   }
   res.json(
-    new ErrorModel('unlogin - middleware-logincheck')
-  );
+    new ErrorModel('unlogin - loginCheck')
+  )
 }

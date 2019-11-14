@@ -1,16 +1,20 @@
 
-// deal with crypto method
 const crypto = require('crypto');
-const SECRECT_KEY = 'RickHuang666';
 
+// key
+const SECRET_KEY = 'rickliyuehuang_666!';
+
+// md5
 const md5 = (content) => {
-  return crypto.createHash('md5').update(content).digest('hex');
+  let md5 = crypto.createHash('md5');
+  return md5.update(content).digest('hex');
 }
 
-const genPassword = (password) => {
-  const str = `password=${password}&key=${SECRECT_KEY}`;
+const genPwd = (pwd) => {
+  const str = `password=${pwd}&key=${SECRET_KEY}`;
   return md5(str);
 }
 
-module.exports = { genPassword };
+console.log(genPwd('666'));
 
+module.exports = { genPwd };

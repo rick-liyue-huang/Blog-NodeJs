@@ -3,13 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
-// get full file info
-const fileName = path.join(__dirname, '../', '../', 'logs', 'access.log');
-
-// creat read stream
-const readStream = fs.createReadStream(fileName);
-
-// create readline object
+const filename = path.join(__dirname, '../', '../', 'logs', 'access.log');
+// create readstream
+const readStream = fs.createReadStream(filename);
+// create read line
 const rl = readline.createInterface({
   input: readStream
 });
@@ -17,24 +14,23 @@ const rl = readline.createInterface({
 let chromeNum = 0;
 let sum = 0;
 
-// read by lines
+// begin read line
 rl.on('line', (lineData) => {
   if(!lineData) {
     return
   }
-  // record total line number
+  // record sum line
   sum++;
 
   const arr = lineData.split(' -- ');
   if(arr[2] && arr[2].indexOf('Chrome') > 0) {
-    // get chrome number
-    chromeNum++
+    // record chrome num
+    chromeNum++;
   }
 
 });
 
-// listen read close
+// listen
 rl.on('close', () => {
-  console.log('chrom percent: ', chromeNum / sum );
-})
-
+  console.log('chrome rate: ', chromeNum / sum);
+});

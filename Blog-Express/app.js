@@ -1,27 +1,26 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
 const fs = require('fs');
-
-// import session middleware
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 const session = require('express-session');
-const redisStore = require('connect-redis')(session);
-const redisClient = require('./db/redis');
+const RedisStore = require('connect-redis')(session);
 
 const blogRouter = require('./routes/blog');
 const userRouter = require('./routes/user');
 
+
 var app = express();
 
-// config log
+// view engine setup
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
+
 const ENV = process.env.NODE_ENV;
-if(ENV !== 'prod') {
-  // development/test environment
-  app.use(logger('dev', {
-    stream: process.stdout
-  }));
+if(ENV !== 'production') {
+  // dev environment
+  app.use(logger('dev'));
 } else {
   // production environment
   const logFileName = path.join(__dirname, 'logs', 'access.log');
@@ -33,26 +32,24 @@ if(ENV !== 'prod') {
   }));
 }
 
-
-app.use(express.json());
+app.use(express.json()); // get 'req.body'
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
 
-// connect session with redis
-const sessionStore = new redisStore({
+const redisClient = require('./db/redis');
+const sessionStore = new RedisStore({
   client: redisClient
 });
-
-// decompose session
-// notice that: set middleware before set router
+// set session before set router
 app.use(session({
-  secret: 'RickHuang666',
+  secret: 'rickliyuehuang_666!',
   cookie: {
     path: '/', // default config
     httpOnly: true, // default config
     maxAge: 24 * 60 * 60 * 1000
   },
-  store: sessionStore // put redis in session
+  store: sessionStore
 }));
 
 app.use('/api/blog', blogRouter);
@@ -67,7 +64,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'dev' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
