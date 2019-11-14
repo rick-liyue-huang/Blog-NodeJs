@@ -205,6 +205,8 @@ to run
 
 ## new blog by koa2
 
+### about router
+
 firstly, install koa2 with ejs by `koa2 -e Blog-New`
 
 deal with params in url on 'GET' method
@@ -231,6 +233,35 @@ router.post('/login', async (ctx, next) => {
 });
 ```
 
+### about ejs
 
+`<%= locals.name %>` for some default variable
+
+```
+<% if(locals.isMe) { %>
+        <a href="#">@ me</a>
+      <% } else { %>
+        <button>follow</button>
+      <% } %>
+```
+for the condition statement
+
+```
+<%- include('widgets/user-info.ejs', {
+      isMe
+    }) %>
+```
+for ejs import 
+
+```
+<ul>
+  <% blogList.forEach(blog => { %>
+    <li data-id='<%= blog.id %>'><%= blog.title %></li>
+  <% }) %>
+</ul>
+```
+for thie loop statement
+
+also can write script tag for javascript
 
 

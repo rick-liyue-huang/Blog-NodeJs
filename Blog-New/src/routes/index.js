@@ -2,7 +2,23 @@ const router = require('koa-router')()
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
-    title: 'Hello Koa 2!'
+    title: 'Hello Koa 2!',
+    message: 'hello Rick',
+    isMe: true,
+    blogList: [
+      {
+        id: 1,
+        title: 'A'
+      },
+      {
+        id: 2,
+        title: 'B'
+      },
+      {
+        id: 3,
+        title: 'C'
+      }
+    ]
   })
 })
 
