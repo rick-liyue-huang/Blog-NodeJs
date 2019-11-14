@@ -207,6 +207,29 @@ to run
 
 firstly, install koa2 with ejs by `koa2 -e Blog-New`
 
+deal with params in url on 'GET' method
+
+```
+router.get('/loadMore/:username/:pageIndex', async (ctx, next) => {
+  const { username, pageIndex } = ctx.params;
+  ctx.body = {
+    title: `this is profile page of ${username} and ${pageIndex}!!`
+  }
+})
+
+```
+
+deal with params in body on 'POST' method
+
+```
+router.post('/login', async (ctx, next) => {
+  const { username, password } = ctx.request.body;
+  ctx.body = {
+    username,
+    password
+  }
+});
+```
 
 
 
