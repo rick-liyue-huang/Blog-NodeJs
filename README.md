@@ -264,4 +264,39 @@ for thie loop statement
 
 also can write script tag for javascript
 
+### about mysql and workbench
+
+`show databases;`
+
+`use newmyblog;`
+
+'select count(id) as `count` from blogs ' check blogs length
+
+`select * from blogs order by id desc limit 2 offset 3;` start from 3 and show 2 blogs one page
+
+外键 foreign key:
+
+了解 外键的创建 以及如何关联
+
+链表查询
+
+`select * from blogs inner join users on users.id=blogs.userid;`
+
+`select blogs.*, users.username, users.nickname from blogs inner join users on users.id=blogs.userid;`
+
+`select blogs.*, users.username, users.nickname from blogs inner join users on users.id=blogs.userid where users.username='rick';`
+
+ORM - object relational mapping
+
+建模（外键） & 同步到数据库
+
+数据表， 用 js 中的模型 （class or object） 代替
+一条或者多条记录，用js中一个对象或者数组代替
+sql语句用对象方法代替
+
+using sequelize to connect database and create 'users' table, 并且创建了 createdAt and updatedAt
+
+know how to create eer diagram.
+
+
 
