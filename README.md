@@ -322,6 +322,11 @@ create '.eslintrc.json' and '.eslintignore' file
 add `"lint": "eslint --ext .js ./src"` in package.json
 
 inspect 调试
+` "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon --inspect=9229 bin/www",
+`
+
+and input `chrome://inspect/` in chrome browser
+
 
 404 页面和错误页
 

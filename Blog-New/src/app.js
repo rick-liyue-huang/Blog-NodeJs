@@ -26,8 +26,7 @@ app.use(require('koa-static')(__dirname + '/public'))
 
 app.use(views(__dirname + '/views', {
   extension: 'ejs'
-}))
-
+})) 
 
 // 用户无论是否登录访问的时候都会创建一个cookie，客户端下次的访问的时候就带着这个cookie，然后server端就根据这个cookie访问redis。
 app.keys = ['rickliyuehuang_666!']
