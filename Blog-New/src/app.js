@@ -5,10 +5,10 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-const session = require('koa-generic-session');
-const redisStore = require('koa-redis');
+const session = require('koa-generic-session')
+const redisStore = require('koa-redis')
 
-const { REDIS_CONFIG } = require('./config/db');
+const { REDIS_CONFIG } = require('./config/db')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
@@ -30,7 +30,7 @@ app.use(views(__dirname + '/views', {
 
 
 // 用户无论是否登录访问的时候都会创建一个cookie，客户端下次的访问的时候就带着这个cookie，然后server端就根据这个cookie访问redis。
-app.keys = ['rickliyuehuang_666!'];
+app.keys = ['rickliyuehuang_666!']
 app.use(session({
   key: 'blog.sid', // cookie name default as koa.sid
   prefix: 'blog:sess:', // redis key prefix default as koa:sess:
@@ -43,7 +43,7 @@ app.use(session({
   store: redisStore({
     all: `${REDIS_CONFIG.host}:${REDIS_CONFIG.port}`
   }) // store the session in redis
-}));
+}))
 
 
 // logger
@@ -62,6 +62,6 @@ app.use(users.routes(), users.allowedMethods())
 // print the error info on server console
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
-});
+})
 
 module.exports = app

@@ -313,5 +313,17 @@ know how to create eer diagram.
 
 使用 jest 在 .test.js里面编写用例；
 
+### 开发环境搭建
+
+创建sequelize 文件夹 
+
+配置 eslint, 以及 pre-commit
+create '.eslintrc.json' and '.eslintignore' file
+add `"lint": "eslint --ext .js ./src"` in package.json
+
+inspect 调试
+
+404 页面和错误页
+
 
 
