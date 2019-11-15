@@ -54,4 +54,4 @@ const get = (key) => {
   return promise;
 }
 
-module.exports = { set }
+module.exports = { set, get }
