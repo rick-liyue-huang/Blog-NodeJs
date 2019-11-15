@@ -299,4 +299,19 @@ using sequelize to connect database and create 'users' table, 并且创建了 cr
 know how to create eer diagram.
 
 
+### about redis
+
+注意：用 ctx.session 来启动 session
+
+### jest 单元测试
+
+单个功能或者接口，给定输入，得到输出，看输出是否符合预期
+需要手动编写用例代码，然后统一执行
+能一次性执行所有的单元测试，短时间内验证所有功能是否正常
+
+意义： 在老系统里面编写新代码，对新代码编写单元测试，然后统一跑一边，看看是否得到
+
+使用 jest 在 .test.js里面编写用例；
+
+
 

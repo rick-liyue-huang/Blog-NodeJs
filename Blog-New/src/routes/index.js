@@ -22,6 +22,7 @@ router.get('/', async (ctx, next) => {
   })
 })
 
+/*
 router.get('/json', async (ctx, next) => {
 
   const session = ctx.session; // 使用session
@@ -33,6 +34,14 @@ router.get('/json', async (ctx, next) => {
   ctx.body = {
     title: 'koa2 json',
     viewNum: session.viewNum
+  }
+});
+
+*/
+
+router.get('/json', async (ctx, next) => {
+  ctx.body = {
+    title: 'koa2 json'
   }
 });
 
