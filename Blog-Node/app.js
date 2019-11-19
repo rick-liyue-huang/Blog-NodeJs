@@ -2,6 +2,7 @@
 const querystring = require('querystring');
 const handleBlogRouter = require('./src/routers/blog');
 const handleUserRouter = require('./src/routers/user');
+const { set, get } = require('./src/db/redis');
 
 const SESSION_DATA = {};
 const getExpire = () => {
@@ -60,6 +61,7 @@ const serverHandler = (req, res) => {
   console.log('req.cookie: ', req.cookie);
 
   // DECOMPOSE SESSION
+  /*
   let needSetCookie = false;
   let userId = req.cookie.userid;
   if(userId) {
@@ -72,8 +74,29 @@ const serverHandler = (req, res) => {
     SESSION_DATA[userId] = {};
   }
   req.session = SESSION_DATA[userId];
+  */
 
-  postDataHandler(req).then(postData => {
+  let needSetCookie = false;
+  let userId = req.cookie.userid;
+  if(!userId) {
+    needSetCookie = true;
+    userId = `${Date.now()}_${Math.random()}`;
+    set(userId, {});
+  }
+  req.sessionId = userId;
+  get(req.sessionId).then(sessionData => {
+    if(null == sessionData) {
+      set(req.sessionId, {});
+      req.session = {};
+    } else {
+      req.session = sessionData;
+    }
+    console.log('req.session: ', req.session);
+
+    return postDataHandler(req); // return promise object
+  })
+
+  /*postDataHandler(req)*/.then(postData => {
 
     req.body = postData;
 

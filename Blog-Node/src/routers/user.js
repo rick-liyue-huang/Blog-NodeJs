@@ -1,19 +1,20 @@
 
 const { SuccessModel, ErrorModel } = require('../model/resModel');
 const { handlePostLogin } = require('../controllers/user');
+const { set } = require('../db/redis');
 
 const handleUserRouter = (req, res) => {
 
   let method = req.method;
   method = method.toLowerCase();
 
-  if('get' === method && '/api/user/login' === req.path) {
+  if('post' === method && '/api/user/login' === req.path) {
     // return {
     //   msg: 'login'
     // }
 
-    // const { username, password } = req.body;
-    const { username, password } = req.query;
+    const { username, password } = req.body;
+    // const { username, password } = req.query;
 
     /*
     const loginData = handlePostLogin(username, password);
@@ -32,6 +33,8 @@ const handleUserRouter = (req, res) => {
         // res.setHeader('Set-Cookie', `username=${loginData.username}; path=/; httpOnly; expires=${getExpire()}`);
         req.session.username = loginData.username;
         req.session.realname = loginData.realname;
+
+        set(req.sessionId, req.session);
 
         return new SuccessModel(loginData);
       } else {
@@ -52,3 +55,4 @@ const handleUserRouter = (req, res) => {
 }
 
 module.exports = handleUserRouter;
+

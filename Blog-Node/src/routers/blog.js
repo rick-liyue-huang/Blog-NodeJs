@@ -5,6 +5,12 @@ const {
   handlePostNew, handlePostUpdate, handlePostDel
 } = require('../controllers/blog');
 
+function loginCheck(req) {
+  if(!req.session.username) {
+    return Promise.resolve(new ErrorModel('unlogin -- logincheck'))
+  }
+}
+
 const handleBlogRouter = (req, res) => {
 
   const id = req.query.id;
@@ -16,7 +22,7 @@ const handleBlogRouter = (req, res) => {
     //   msg: 'list'
     // }
 
-    const author = req.query.author || '';
+    let author = req.query.author || '';
     const keyword = req.query.keyword || '';
     /*
     const listData = handleGetList(author, keyword);
@@ -24,6 +30,15 @@ const handleBlogRouter = (req, res) => {
       return new SuccessModel(blogData);
     }
     */
+
+   if(req.query.isadmin) {
+      const loginCheckResult = loginCheck(req);
+      if(loginCheckResult) {
+        return loginCheckResult;
+      }
+      author = req.session.username;
+   }
+    
    const listResult = handleGetList(author, keyword);
    console.log('listResult: ', listResult);
    return listResult.then(listData => {
@@ -62,7 +77,14 @@ const handleBlogRouter = (req, res) => {
       return new SuccessModel(newData);
     }
     */
-   req.body.author = 'rick';
+
+   const loginCheckResult = loginCheck(req);
+   if(loginCheckResult) {
+     return loginCheckResult;
+   }
+  
+  //  req.body.author = 'rick';
+   req.body.author = req.session.username;
    const newResult = handlePostNew(req.body);
    return newResult.then(newData => {
      if(newData) {
@@ -83,6 +105,11 @@ const handleBlogRouter = (req, res) => {
       return new ErrorModel('un update');
     }
     */
+   const loginCheckResult = loginCheck(req);
+   if(loginCheckResult) {
+     return loginCheckResult;
+   }
+
    const updateResult = handlePostUpdate(id, req.body);
    return updateResult.then(updateData => {
      if(updateData) {
@@ -105,7 +132,13 @@ const handleBlogRouter = (req, res) => {
       return new ErrorModel('un delete');
     }
     */
-   const author = 'rick';
+   const loginCheckResult = loginCheck(req);
+   if(loginCheckResult) {
+     return loginCheckResult;
+   }
+
+  //  const author = 'rick';
+   const author = req.session.username;
    const delResult = handlePostDel(id, author);
    return delResult.then(delData => {
      if(delData) {
