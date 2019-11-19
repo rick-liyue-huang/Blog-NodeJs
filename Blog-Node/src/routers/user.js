@@ -14,12 +14,23 @@ const handleUserRouter = (req, res) => {
 
     const { username, password } = req.body;
 
+    /*
     const loginData = handlePostLogin(username, password);
     if(loginData) {
       return new SuccessModel(loginData);
     } else {
       return new ErrorModel('unlogin');
     }
+    */
+
+    const loginResult = handlePostLogin(username, password);
+    return loginResult.then(loginData => {
+      if(loginData.username) {
+        return new SuccessModel(loginData);
+      } else {
+        return new ErrorModel('unlogin');
+      }
+    });
   }
 }
 
