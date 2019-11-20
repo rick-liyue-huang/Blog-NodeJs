@@ -3,6 +3,7 @@ const querystring = require('querystring');
 const handleBlogRouter = require('./src/routers/blog');
 const handleUserRouter = require('./src/routers/user');
 const { set, get } = require('./src/db/redis');
+const { access } = require('./src/utils/log');
 
 const SESSION_DATA = {};
 const getExpire = () => {
@@ -39,6 +40,9 @@ const postDataHandler = (req) => {
 
 
 const serverHandler = (req, res) => {
+
+  // record log
+  access(`${req.method} -- ${req.url} -- ${req.headers['user-agent']} -- ${Date.now()}`);
 
   res.setHeader('Content-Type', 'application/json');
 

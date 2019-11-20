@@ -202,6 +202,8 @@ create copy.sh
 to run 
 `* 0 * * * sh /Users/mac/Documents/gitgarden/Blog-NodeJs/Blog-Node/src/utils/copy.sh`
 
+`crontab -l` to check list
+
 
 ## new blog by koa2
 

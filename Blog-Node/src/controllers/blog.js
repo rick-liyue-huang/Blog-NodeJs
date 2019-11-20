@@ -1,5 +1,6 @@
 
-const { exec } = require('../db/mysql');
+const xss = require('xss');
+const { exec, escape } = require('../db/mysql');
 
 const handleGetList = (author, keyword) => {
   // return [
@@ -35,12 +36,17 @@ const handlePostNew = (blogData = {}) => {
   // return {
   //   id: 3
   // }
-  const title = blogData.title;
-  const content = blogData.content;
+  let title = blogData.title;
+  let content = blogData.content;
   const createtime = Date.now();
   const author = blogData.author;
+  title = xss(title);
+  content = xss(content);
+
+  title = escape(title);
+  content = escape(content);
   const sql = `insert into blogs (title, content, createtime, author)
-    values ('${title}', '${content}', ${createtime}, '${author}');`;
+    values (${title}, ${content}, ${createtime}, '${author}');`;
   
   return exec(sql).then(insertData => {
     console.log('insertData: ', insertData);
@@ -53,9 +59,16 @@ const handlePostNew = (blogData = {}) => {
 const handlePostUpdate = (id, blogData = {}) => {
   console.log('id, blogData: ', id, blogData);
   // return true;
-  const title = blogData.title;
-  const content = blogData.content;
-  const sql = `update blogs set title='${title}', content='${content}' 
+  let title = blogData.title;
+  let content = blogData.content;
+
+  title = escape(title);
+  content = escape(content);
+
+  title = xss(title);
+  content = xss(content);
+
+  const sql = `update blogs set title=${title}, content=${content}
    where id=${id};`;
   
   return exec(sql).then(updateData => {
