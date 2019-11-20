@@ -2,75 +2,82 @@
 const express = require('express');
 const router = express.Router();
 const { SuccessModel, ErrorModel } = require('../model/resModel');
-const { getListHandler,
-  getDetailHandler,
-  postNewHandler,
-  postUpdateHandler,
-  postDelHandler, } = require('../controllers/blog');
-const loginCheck = require('../middlewares/loginCheck');
+const {
+  handleGetList, handleGetDetail,
+  handlePostNew, handlePostUpdate, handlePostDel
+} = require('../controllers/blog');
+const loginCheck = require('../middlewares/logincheck');
+
 
 router.get('/list', (req, res, next) => {
+
   let author = req.query.author || '';
   const keyword = req.query.keyword || '';
 
   if(req.query.isadmin) {
-    // admin page
-
-    console.log('is admin');
-    
-    if(null == req.session.username) {
-      // unlogin
-      console.error('is admin but not login');
-      res.json(new ErrorModel('unlogin - blog'));
+    console.log('this is admin');
+    if(req.session.username == null) {
+      res.json(new ErrorModel('unlogin---'));
       return
     }
-    // otherwise 
     author = req.session.username;
   }
-
-  const listResult = getListHandler(author, keyword);
+  
+  const listResult = handleGetList(author, keyword);
+  console.log('listResult: ', listResult);
   return listResult.then(listData => {
-    res.json(new SuccessModel(listData));
+    console.log('listData: ', listData);
+    if(listData) {
+      res.json(new SuccessModel(listData));
+    }
   });
 });
 
-
 router.get('/detail', (req, res, next) => {
-  const detailResult = getDetailHandler(req.query.id);
+  
+  const detailResult = handleGetDetail(req.query.id);
   return detailResult.then(detailData => {
-    res.json(new SuccessModel(detailData)); 
+    if(detailData) {
+      res.json(new SuccessModel(detailData));
+    }
   });
 });
 
 router.post('/new', loginCheck, (req, res, next) => {
+
   req.body.author = req.session.username;
-  const newResult = postNewHandler(req.body);
+  const newResult = handlePostNew(req.body);
   return newResult.then(newData => {
-    res.json(new SuccessModel(newData));
+    if(newData) {
+      res.json(new SuccessModel(newData));
+    }
   });
 });
 
 router.post('/update', loginCheck, (req, res, next) => {
-  const updateResult = postUpdateHandler(req.query.id, req.body);
+
+  const updateResult = handlePostUpdate(req.query.id, req.body);
   return updateResult.then(updateData => {
     if(updateData) {
       res.json(new SuccessModel(updateData));
     } else {
-      res.json(new ErrorModel('un update'));
+      res.json(new ErrorModel('update err'));
     }
   });
 });
 
 router.post('/del', loginCheck, (req, res, next) => {
+
   const author = req.session.username;
-  const delResult = postDelHandler(req.query.id, author);
+  const delResult = handlePostDel(req.query.id, author);
   return delResult.then(delData => {
     if(delData) {
       res.json(new SuccessModel(delData));
     } else {
-      res.json(new ErrorModel('un update'));
+      res.json(new ErrorModel('del err'));
     }
   });
-})
+
+});
 
 module.exports = router;

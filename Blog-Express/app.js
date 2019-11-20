@@ -1,17 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
 const fs = require('fs');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
 const blogRouter = require('./routes/blog');
 const userRouter = require('./routes/user');
 
-
-var app = express();
+const app = express();
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
@@ -19,31 +18,32 @@ var app = express();
 
 const ENV = process.env.NODE_ENV;
 if(ENV !== 'production') {
-  // dev environment
   app.use(logger('dev'));
 } else {
-  // production environment
-  const logFileName = path.join(__dirname, 'logs', 'access.log');
+
+  // in production environment
+  const logFileName = path.resolve(__dirname, 'logs', 'access.log');
   const writeStream = fs.createWriteStream(logFileName, {
     flags: 'a'
   });
+
   app.use(logger('combined', {
     stream: writeStream
-  }));
+  })); // access loger
 }
 
-app.use(express.json()); // get 'req.body'
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.json()); // getPostData
+app.use(express.urlencoded({ extended: false })); // application/json
+app.use(cookieParser()); // req.cookie
 // app.use(express.static(path.join(__dirname, 'public')));
 
+// decompose session and store in redis before router config
 const redisClient = require('./db/redis');
 const sessionStore = new RedisStore({
   client: redisClient
-});
-// set session before set router
+})
 app.use(session({
-  secret: 'rickliyuehuang_666!',
+  secret: 'rick.liyue.huang@gmail.com',
   cookie: {
     path: '/', // default config
     httpOnly: true, // default config

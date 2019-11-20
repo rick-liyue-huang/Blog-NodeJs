@@ -1,12 +1,11 @@
 
 class BaseModel {
   constructor(data, message) {
-    if('string' === typeof data){
+    if('string' === typeof data) {
       this.message = data;
       data = null;
       message = null;
     }
-
     if(data) {
       this.data = data;
     }
@@ -30,7 +29,4 @@ class ErrorModel extends BaseModel {
   }
 }
 
-module.exports = {
-  SuccessModel,
-  ErrorModel
-};
+module.exports = { SuccessModel, ErrorModel }

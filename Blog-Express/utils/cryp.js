@@ -1,20 +1,20 @@
 
 const crypto = require('crypto');
 
-// key
-const SECRET_KEY = 'rickliyuehuang_666!';
+// secret key
+const SECRET_KEY = 'rick.liyue.huang@gmail.com';
 
-// md5
-const md5 = (content) => {
+function md5(content) {
   let md5 = crypto.createHash('md5');
   return md5.update(content).digest('hex');
 }
 
-const genPwd = (pwd) => {
-  const str = `password=${pwd}&key=${SECRET_KEY}`;
+// create function to generate crypted password
+function genPsd(password) {
+  const str = `password=${password}&key=${SECRET_KEY}`;
   return md5(str);
 }
 
-console.log(genPwd('666'));
+console.log(genPsd('666'));
 
-module.exports = { genPwd };
+module.exports = { genPsd }
