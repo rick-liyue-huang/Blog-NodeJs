@@ -40,6 +40,9 @@ getFileContent('a.json', (adata) => {
 
 */
 
+
+
+/*
 function getFileContent(filename) {
   const promise = new Promise((resolve, reject) => {
     const fullFileName = path.join(__dirname, 'files', filename);
@@ -63,4 +66,51 @@ getFileContent('a.json').then(adata => {
 }).then(cdata => {
   console.log('cdata: ', cdata);
 });
+
+*/
+
+function getFileContent(filename) {
+  const promise = new Promise((resolve, reject) => {
+    const fullFileName = path.join(__dirname, 'files', filename);
+    fs.readFile(fullFileName, (err, data) => {
+      if(err) {
+        reject(err);
+        return;
+      }
+      resolve(JSON.parse(data.toString()));
+    });
+  });
+  return promise;
+}
+
+/*
+async function readFileData() {
+  const aData = await getFileContent('a.json');
+  console.log('a data', aData);
+  const bData = await getFileContent(aData.next);
+  console.log('b data', bData);
+  const cData = await getFileContent(bData.next);
+  console.log('cData', cData);
+}
+
+readFileData();
+
+*/
+
+async function readData() {
+  const aData = await getFileContent('a.json');
+  return aData;
+}
+
+async function test() {
+  const aData = await readData();
+  console.log(aData);
+}
+
+test();
+
+// await 后面可以追加promise对象
+// await 必需包裹在async 函数里面
+// async 函数返回的也是一个promise对象
+// try catch 截获promise 中的 reject的值
 
