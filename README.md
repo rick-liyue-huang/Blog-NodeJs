@@ -204,6 +204,47 @@ to run
 
 `crontab -l` to check list
 
+### pm2
+
+install by ` npm install pm2 -g`
+check pm2 by `pm2 --version`
+
+`pm2 list` to check 
+
+`pm2 start` 
+`pm2 restart`
+`pm2 stop`
+`mp2 delete`
+`pm2 log`
+`pm2 monit`
+
+```
+{
+  "apps": {
+    "name": "pm2-test-server",
+    "script": "app.js",
+    "watch": true, // 监听变化自动重启
+    "ignore_watch": [ // 忽略一些文件的变化
+      "node_modules",
+      "logs"
+    ],
+    "instances": 2, // 
+    "error_file": "logs/err.log", // 错误日志放到哪里
+    "out_file": "logs/out.log", // 输出日志放到哪里
+    "log_date_format": "YYY-MM-DD HH:mm:ss" // 日志时间 
+  }
+}
+```
+here create 'pm2.config.json' file
+
+进程守候：出现错误就会进程重新启动，并且记录错误
+配置文件：进程数量，日志文件目录
+多进程：操作系统有很多进程，但是会限制每个进程的大小，单个进程是受限的，因为如果进程崩溃，就会有问题，单个进程的内存是受限的
+内存无法充分利用多核CPU的优势
+多进程之间内存无法共享
+多进程之间可以通过访问redis来实现数据共享
+
+
 
 ## new blog by koa2
 

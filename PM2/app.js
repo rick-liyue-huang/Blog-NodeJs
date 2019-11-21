@@ -15,11 +15,11 @@ const server = http.createServer((req, res) => {
   res.end(
     JSON.stringify({
       errno: 0,
-      msg: 'pm2 test server 3'
+      msg: 'pm2 test server 2'
     })
   );
 })
 
-server.listen(8000, () => {
-  console.log('server is on 8000...');
+server.listen(3000, () => {
+  console.log('server is on 3000...');
 })
