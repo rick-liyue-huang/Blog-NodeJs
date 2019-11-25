@@ -7,5 +7,17 @@
   <body>
     <h1><%= title %></h1>
     <p>EJS Welcome to <%= title %></p>
+    <p><%= msg %></p>
+    <p><%= locals.name %></p>
+    <hr>
+    <%- include('./wigets/userInfo', {
+      isMe
+    }) %>
+
+    <hr>
+
+    <%- include('./wigets/blogList', {
+      blogList
+    }) %>
   </body>
 </html>

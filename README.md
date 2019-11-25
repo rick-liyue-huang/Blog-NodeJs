@@ -294,7 +294,7 @@ for the condition statement
       isMe
     }) %>
 ```
-for ejs import 
+for ejs import, also can import javascript
 
 ```
 <ul>
@@ -302,6 +302,10 @@ for ejs import
     <li data-id='<%= blog.id %>'><%= blog.title %></li>
   <% }) %>
 </ul>
+<script>
+  console.log(100);
+</script>
+
 ```
 for thie loop statement
 
