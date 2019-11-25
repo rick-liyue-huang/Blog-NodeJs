@@ -313,6 +313,8 @@ also can write script tag for javascript
 
 ### about mysql and workbench
 
+password: 'abc123456'
+
 `show databases;`
 
 `use newmyblog;`
@@ -341,9 +343,23 @@ ORM - object relational mapping
 一条或者多条记录，用js中一个对象或者数组代替
 sql语句用对象方法代替
 
-using sequelize to connect database and create 'users' table, 并且创建了 createdAt and updatedAt
+using sequelize to connect database and create 'users' table, 并且创建了 createdAt and updatedAt.
+
+its better to write down these two ways together. 
+```
+Blog.belongsTo(User, {
+  // create foreign key Blog.userId -> User.id
+  foreignKey: 'userId'
+});
+
+User.hasMany(Blog, {
+  foreignKey: 'userId'
+});
+```
 
 know how to create eer diagram.
+
+![avatar](./pics/eer.png)
 
 
 ### about redis
