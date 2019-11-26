@@ -372,9 +372,13 @@ know how to create eer diagram.
 需要手动编写用例代码，然后统一执行
 能一次性执行所有的单元测试，短时间内验证所有功能是否正常
 
-意义： 在老系统里面编写新代码，对新代码编写单元测试，然后统一跑一边，看看是否得到
+意义： 在老系统里面编写新代码，对新代码编写单元测试，然后统一跑一遍，看看是否得到
 
 使用 jest 在 .test.js里面编写用例；
+
+`npm i --save-dev jest supertest`
+`"test": "cross-env NODE_ENV=test jest --runInBand --forceExit --colors"`
+
 
 ### 开发环境搭建
 
