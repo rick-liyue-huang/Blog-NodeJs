@@ -8,5 +8,6 @@
 //  match with 'var server = http.createServer(app.callback());'
  const serverHandler = require('../src/app').callback();
 
- module.exports = request(serverHandler);
+ const server = request(serverHandler);
+ module.exports = server;
 

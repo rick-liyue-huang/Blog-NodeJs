@@ -10,6 +10,8 @@ module.exports = {
   isDev: 'dev' === ENV,
   notDev: 'dev' !== ENV,
   isProd: 'production' === ENV,
-  notProd: 'production' !== ENV
+  notProd: 'production' !== ENV,
+  isTest: 'test' === ENV,
+  notTest: 'test' !== ENV
 }
 

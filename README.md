@@ -382,7 +382,16 @@ know how to create eer diagram.
 
 ### 开发环境搭建
 
-创建sequelize 文件夹 
+创建 db 文件夹 
+
+in 'seq.js'
+
+```
+/ if on test environment, donot print matched sql statement
+if(isTest) {
+  conf.logging = () => {}
+}
+```
 
 配置 eslint, 以及 pre-commit
 create '.eslintrc.json' and '.eslintignore' file
