@@ -29,11 +29,13 @@ if(isProd) {
 onerror(app, onerrorConf);
 
 // jwt
+/*
 app.use(jwtKoa({
   secret: SECRET
 }).unless({
   path: [/^\/users\/login/] // 那些自定义目录忽略jwt验证
 }));
+*/
 
 // middlewares
 app.use(bodyparser({
