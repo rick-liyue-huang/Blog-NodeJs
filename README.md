@@ -415,5 +415,10 @@ and input `chrome://inspect/` in chrome browser
 
 404 页面和错误页
 
+明白view文件夹之间的ejs之间互相的引用
+
+在 routers里面建立两个文件夹，view 是针对页面， api是针对前后端接口
+
+
 
 
