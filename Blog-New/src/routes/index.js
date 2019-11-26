@@ -1,6 +1,8 @@
 const router = require('koa-router')()
 
 router.get('/', async (ctx, next) => {
+
+  // debugger // for inspect
   // read data from template on async way
   await ctx.render('index', {
     title: 'Hello Koa 2!',

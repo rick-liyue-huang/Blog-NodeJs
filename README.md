@@ -397,7 +397,16 @@ if(isTest) {
 create '.eslintrc.json' and '.eslintignore' file
 add `"lint": "eslint --ext .js ./src"` in package.json
 
-inspect 调试
+在提交之前控制语法
+`npm i --save-dev pre-commit` 并且
+
+```
+"pre-commit": [
+  "lint"
+]å
+```
+
+inspect 调试: 就是利用Chrome浏览器的方式来调试node.js代码
 ` "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon --inspect=9229 bin/www",
 `
 
