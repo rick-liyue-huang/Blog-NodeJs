@@ -420,5 +420,19 @@ and input `chrome://inspect/` in chrome browser
 在 routers里面建立两个文件夹，view 是针对页面， api是针对前后端接口
 
 
+## jwt --  json web token
+
+用户认证成功后，server端返回一个加密的token给客户端
+客户端后续每次请求都带token,以示当前身份
+
+jwt 用户信息加密存储在客户端，不依赖cookie，可跨域
+
+大型系统两者可共用
+jwt更适用于服务节点比较多，跨域比较多的系统，不需要redis
+session更适用于统一的web服务，server要严格管理用户信息
+
+
+
+
 
 

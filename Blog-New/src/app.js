@@ -7,8 +7,11 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
+const jwtKoa = require('koa-jwt');
+
 const { REDIS_CONFIG } = require('./conf/db');
 const { isProd } = require('./utils/env');
+const { SECRET } = require('./conf/constants');
 
 const index = require('./routes/index')
 const users = require('./routes/users')
@@ -24,6 +27,13 @@ if(isProd) {
 }
 
 onerror(app, onerrorConf);
+
+// jwt
+app.use(jwtKoa({
+  secret: SECRET
+}).unless({
+  path: [/^\/users\/login/] // 那些自定义目录忽略jwt验证
+}));
 
 // middlewares
 app.use(bodyparser({
