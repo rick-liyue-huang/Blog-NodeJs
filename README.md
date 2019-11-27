@@ -481,6 +481,13 @@ session更适用于统一的web服务，server要严格管理用户信息
 登录
 /api/user/login
 
+在该分支下处理用户登录
+`git checkout -b newblog-feature-login`
+
+开发注册功能
+回顾技术方案
+开发注册接口
+密码加密 用户信息验证
 
 
 

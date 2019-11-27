@@ -6,7 +6,8 @@
 
 const seq = require('./seq');
 
-// require('./model');
+// sync the data model
+require('./model/index');
 
 // test connect
 
@@ -17,7 +18,7 @@ seq.authenticate().then(() => {
 });
 
 // execute sync
-seq.sync({force: true}).then(() => {
+seq.sync({ force: true }).then(() => {
   console.log('sync ok');
   process.exit();
 });

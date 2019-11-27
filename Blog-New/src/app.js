@@ -7,14 +7,15 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
-const jwtKoa = require('koa-jwt');
+// const jwtKoa = require('koa-jwt');
 
 const { REDIS_CONFIG } = require('./conf/db');
 const { isProd } = require('./utils/env');
-const { SECRET } = require('./conf/constants');
+// const { SECRET } = require('./conf/constants');
 
-const index = require('./routes/index')
-const users = require('./routes/users')
+const index = require('./routes/index');
+const userViewRouter = require('./routes/view/user');
+const userApiRouter = require('./routes/api/user');
 const errorViewRouter = require('./routes/view/error');
 
 // error handler on page
@@ -76,9 +77,11 @@ app.use(session({
 }))
 
 // routes
-app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
-// must register on the bottom
+app.use(index.routes(), index.allowedMethods());
+// apply view and api user router
+app.use(userApiRouter.routes(), userApiRouter.allowedMethods());
+app.use(userViewRouter.routes(), userViewRouter.allowedMethods());
+// 404 must register on the bottom
 app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods());
 
 // error-handling on console
