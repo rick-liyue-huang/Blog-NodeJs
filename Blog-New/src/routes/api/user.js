@@ -6,11 +6,13 @@
 
 const router = require('koa-router')();
 const { isExist, register } = require('../../controllers/user');
+const userValidate = require('../../validator/user');
+const { genValidator } = require('../../middlewares/validator');
 
 router.prefix('/api/user');
 
 // register router
-router.post('/register', async (ctx, next) => {
+router.post('/register', genValidator(userValidate), async (ctx, next) => {
   const { userName, password, gender } = ctx.request.body;
   console.log('userName, password, gender', userName, password, gender);
   // apply controller methods
