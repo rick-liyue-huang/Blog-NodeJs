@@ -30,7 +30,7 @@ function formatUser(list) {
     return list.map(_formatUserPicture);
   }
   // get single user
-  return _formatUserPicture(lost);
+  return _formatUserPicture(list);
 }
 
 

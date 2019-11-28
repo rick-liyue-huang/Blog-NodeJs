@@ -10,6 +10,7 @@ const redisStore = require('koa-redis');
 // const jwtKoa = require('koa-jwt');
 
 const { REDIS_CONFIG } = require('./conf/db');
+const { SESSION_SECRET_KEY } = require('./conf/secret');
 const { isProd } = require('./utils/env');
 // const { SECRET } = require('./conf/constants');
 
@@ -60,7 +61,7 @@ app.use(async (ctx, next) => {
 
 // config the session and redis before using routers
 // session configuration
-app.keys = ['rick.liyue.huang@gmail.com'];
+app.keys = [SESSION_SECRET_KEY];
 
 app.use(session({
   key: 'blog.sid', // cookie name default as koa.sid
