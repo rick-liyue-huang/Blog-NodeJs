@@ -490,6 +490,9 @@ session更适用于统一的web服务，server要严格管理用户信息
 密码加密 用户信息验证
 
 
+json-schema to 校验用户数据
+使用 ajv
+
 
 
 
