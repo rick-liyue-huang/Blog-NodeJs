@@ -1,6 +1,8 @@
-const router = require('koa-router')()
 
-router.get('/', async (ctx, next) => {
+const router = require('koa-router')()
+const { loginCheck, loginRedirect } = require('../middlewares/loginChecks');
+
+router.get('/', loginRedirect, async (ctx, next) => {
 
   // debugger // for inspect
   // read data from template on async way
@@ -17,7 +19,7 @@ router.get('/', async (ctx, next) => {
 })
 
 
-router.get('/json', async (ctx, next) => {
+router.get('/json', loginCheck, async (ctx, next) => {
   const session = ctx.session;
   if(session.viewNum == null) {
     session.viewNum = 0;
