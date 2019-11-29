@@ -496,6 +496,12 @@ json-schema to 校验用户数据
 创建单元测试来验证全部的用户部分
 单元测试是真实的来操作数据，因为是在test环境，因此没有污染数据
 
+返回 master 
+`git checkout master`
+`git pull origin master`
+`git merge newblog-feature-login`
+`git push origin master`
+newblog-feature-login
 
 
 
