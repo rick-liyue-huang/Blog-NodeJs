@@ -5,7 +5,7 @@
  */
 
 const router = require('koa-router')();
-const { isExist, register } = require('../../controllers/user');
+const { isExist, register, login } = require('../../controllers/user');
 const userValidate = require('../../validator/user');
 const { genValidator } = require('../../middlewares/validator');
 
@@ -28,6 +28,13 @@ router.post('/isExist', async (ctx, next) => {
   ctx.body = await isExist(userName);
 
 });
+
+// login router
+router.post('/login', async (ctx, next) => {
+  const { userName, password } = ctx.request.body;
+  // apply controller mehtod
+  ctx.body = await login(ctx, userName, password);
+})
 
 module.exports = router;
 
