@@ -4,10 +4,10 @@
  * @author Rick
  */
 
-const { getUserInfo, createUser } = require('../services/user');
+const { getUserInfo, createUser, deleteUser } = require('../services/user');
 const { SuccessModel, ErrorModel } = require('../model/ResModel');
 const { registerUserNameNotExistInfo, registerUserNameExistInfo,
-  registerFailInfo, loginFailInfo } = require('../model/ErrorInfo');
+  registerFailInfo, loginFailInfo, deleteUserFailInfo } = require('../model/ErrorInfo');
 const { genPwd } = require('../utils/cryp');
 
  /**
@@ -80,7 +80,23 @@ async function login(ctx, userName, password) {
   return new SuccessModel();
 }
 
+/**
+ * delete the current user
+ * @param {string} userName 
+ */
+async function deleteCurrentUser(userName) {
+  // apply service method
+  const result = await deleteUser(userName);
+  if(result) {
+    // delete successful
+    return new SuccessModel();
+  }
+  // delete fail
+  return new ErrorModel(deleteUserFailInfo);
+
+}
+
 module.exports = {
-  isExist, register, login
+  isExist, register, login, deleteCurrentUser
 }
 

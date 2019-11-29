@@ -19,7 +19,7 @@ router.get('/', loginRedirect, async (ctx, next) => {
 })
 
 
-router.get('/json', loginCheck, async (ctx, next) => {
+router.get('/json', async (ctx, next) => {
   const session = ctx.session;
   if(session.viewNum == null) {
     session.viewNum = 0;
