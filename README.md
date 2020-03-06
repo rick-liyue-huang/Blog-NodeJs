@@ -592,3 +592,22 @@ sql 语言
 
 
 ```
+
+什么是 cookie： 存储在浏览器的一段字符串
+跨域不共享，浏览器为每一个域名存储 cookie，这些 cookie 是不共享的
+格式如下： k1=v1;k2=v2;
+因此可以存储结构化数据
+javascript 如何操作 cookie
+每次发送 http 请求，会将请求域的 cookie 一起发送给 server
+server 可以修改 cookie 并返回浏览器
+server 可以修改 cookie 并返回浏览器
+浏览器可以通过 JavaScript 修改 cookie
+
+cookie 的意义和特点
+前后端如何查看和修改 cookie
+后端设置 cookie
+如何使用 cookie 实现登录验证
+
+上一节的问题：会暴露 username，很危险
+如何解决：cookie 中存储 userid，server 端对应 username
+解决方案：session, 即 server 端存储用户信息
