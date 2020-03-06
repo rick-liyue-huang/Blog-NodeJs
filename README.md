@@ -1,10 +1,8 @@
-
 # Blog in Node.js (Express and Koa2)
-
 
 ## Introduction
 
-Here I will use pure Node.js, Express.js and Koa2.js to complete the blog project, which only only focus on the server-end. This project includes four directories, which are Blog-Node, Blog-Express, Blog-Koa and Front-End-View, respectively. 
+Here I will use pure Node.js, Express.js and Koa2.js to complete the blog project, which only only focus on the server-end. This project includes four directories, which are Blog-Node, Blog-Express, Blog-Koa and Front-End-View, respectively.
 
 Firstly, I use pure Node.js to create the blog server, in order to dig the intrinsic node-server knowlodge, where I mix in many necessary skills, including mysql database to store data, redis to store session, nginx to cross front-end and server-end, log to recorde logs, xss and escape to avoid attack, crypto to encrypt password, pm2 to manage node process.
 
@@ -13,7 +11,6 @@ Secondly, I will reuse some coding in Express and Koa2 framework to completely q
 Thirdly, I build one basic front-end project, let it get the data in realtime from backend through ajax and jquery simply.
 
 The purpose of project is to familiar with the node server working principle, and can use kinds of skills masterly to satisfy with customer needs.
-
 
 ## Tech Proposal
 
@@ -26,57 +23,52 @@ The purpose of project is to familiar with the node server working principle, an
 7. Create methods to avoid attacks and record the logs;
 8. Use pm2 in 'prod' environment.
 
-
 ## Project Process
 
 ### Pure node.js
 
-In this porject, I firstly create the completed server by the pure node.js and query the data from mySQL database, and let front end get data from database through server. 
+In this porject, I firstly create the completed server by the pure node.js and query the data from mySQL database, and let front end get data from database through server.
 
-I create server in file of *'bin/www.js'*, in which I import server inner logic application funcion 'serverHandler' in 'app.js'; while in the 'app.js' file, I deal with post method by one seperated function named 'handlePostData', and deal with router of *'blog'* and *'user'* by two external functions named *'handleBlogRouter'* and *'handleUserRouter'*. In one word, *'serverHandler'* in *'App.js'* is the general function to realize the server logic application, and all details will bring out to *'handleBlogRouter'* and *'handleUserRouter'*, in *'router'* directory respectively.
+I create server in file of _'bin/www.js'_, in which I import server inner logic application funcion 'serverHandler' in 'app.js'; while in the 'app.js' file, I deal with post method by one seperated function named 'handlePostData', and deal with router of _'blog'_ and _'user'_ by two external functions named _'handleBlogRouter'_ and _'handleUserRouter'_. In one word, _'serverHandler'_ in _'App.js'_ is the general function to realize the server logic application, and all details will bring out to _'handleBlogRouter'_ and _'handleUserRouter'_, in _'router'_ directory respectively.
 
-In the router directory, the server will confirm the url by 'req.method' and 'req.path' display the different contents. On the specific url and method, the server will call the specific metod created in *'controller'* directory. Normally front-end and server-end communicate data by some existed format, so I create some specific mode to store these format in *'model'* directory.
+In the router directory, the server will confirm the url by 'req.method' and 'req.path' display the different contents. On the specific url and method, the server will call the specific metod created in _'controller'_ directory. Normally front-end and server-end communicate data by some existed format, so I create some specific mode to store these format in _'model'_ directory.
 
-In these controller methods, I will trigger sql language exported, from *'mysql.js'* in *'db'* directory, to communicate with mysql database to get data in realtime, after which I will return these data in assigned format on the front-end.
+In these controller methods, I will trigger sql language exported, from _'mysql.js'_ in _'db'_ directory, to communicate with mysql database to get data in realtime, after which I will return these data in assigned format on the front-end.
 
-In this blog project, I will use some existed user whose username and password stored in mysql database to login the blog and create, update and delete his own blog articles, so I will use cookie and sessioin to store the username infomation. Because of the limitation of session, I will store the sessions on redis server, so that all node server processes can visit them. I create the 'req.cookie' and 'req.session' in *'app.js'*, and store the *'req.session'* in redis by *'redis.js'* in *'db'* directory.
+In this blog project, I will use some existed user whose username and password stored in mysql database to login the blog and create, update and delete his own blog articles, so I will use cookie and sessioin to store the username infomation. Because of the limitation of session, I will store the sessions on redis server, so that all node server processes can visit them. I create the 'req.cookie' and 'req.session' in _'app.js'_, and store the _'req.session'_ in redis by _'redis.js'_ in _'db'_ directory.
 
-Security is always the utmost important for network, so I use XSS module and 'escape' method to avoid these attacks, and also use *'crypto'* module to encrypt the password existed in *'cryp.js'* in *'utils'* directory. Record the logs can be easily for the staff to know how the server works well or what happend after the server broke down. I also create method in *'log.js'* in *'utils'* to record the logs. I can select different methods to record logs in 'dev' and 'prod' environment. pm2 is a process management tool, I will use it in 'prod' environment.
+Security is always the utmost important for network, so I use XSS module and 'escape' method to avoid these attacks, and also use _'crypto'_ module to encrypt the password existed in _'cryp.js'_ in _'utils'_ directory. Record the logs can be easily for the staff to know how the server works well or what happend after the server broke down. I also create method in _'log.js'_ in _'utils'_ to record the logs. I can select different methods to record logs in 'dev' and 'prod' environment. pm2 is a process management tool, I will use it in 'prod' environment.
 
-After all the process to complete the blog project, I master the basic skills and also know the intrinsic knowledge how to build one self-contained node server project. 
+After all the process to complete the blog project, I master the basic skills and also know the intrinsic knowledge how to build one self-contained node server project.
 
+### Express.js
 
-### Express.js 
+In the Blog-Express directory, I create the same blog project, in which I use express.js for server and same Front-End-View pages. Here I still use _'controller'_, _'model'_, _'utils'_, _'config'_ and _'db'_ directories.
 
-In the Blog-Express directory, I create the same blog project, in which I use express.js for server and same Front-End-View pages. Here I still use *'controller'*, *'model'*, *'utils'*, *'config'* and *'db'* directories.
-
-Because Express already mixin with some modules, so I donot need to create all the fuctions myself, I can import 'express-session' and 'connect-redis' to create session and store it in redis. I also can use 'morgan' to record logs, all of which can be applied in *'app.js'*. Express can use middleware to create the chain programming, so I create the *'loginCheck.js'* in *'middleware'* directory, which can be used in methods in 'controller' directory to confirm the user login or not. 
-
+Because Express already mixin with some modules, so I donot need to create all the fuctions myself, I can import 'express-session' and 'connect-redis' to create session and store it in redis. I also can use 'morgan' to record logs, all of which can be applied in _'app.js'_. Express can use middleware to create the chain programming, so I create the _'loginCheck.js'_ in _'middleware'_ directory, which can be used in methods in 'controller' directory to confirm the user login or not.
 
 ### Koa2.js
 
-Similar as Express.js project, I still can use some coding in *'controller'*, *'model'*, *'utils'*, *'config'* and *'db'* directories. But Koa2 use **'async'** and **'await'** to void callback hell, so I modify the methods in methods in *'controller'* *'router'* directories. I also import 'koa-generic-session', 'koa-redis', 'koa-morgan' to create session and store it in redis.
+Similar as Express.js project, I still can use some coding in _'controller'_, _'model'_, _'utils'_, _'config'_ and _'db'_ directories. But Koa2 use **'async'** and **'await'** to void callback hell, so I modify the methods in methods in _'controller'_ _'router'_ directories. I also import 'koa-generic-session', 'koa-redis', 'koa-morgan' to create session and store it in redis.
 
 All of the three projects I use nginx to connect server-end and front-end by avoiding cross-domain problems. and also use pm2 to manage node server process in environments.
 
-
 ## Project Display
 
-Take Blog-Koa project as an example, in order to display the project well, we need to pull the project to local 
-by `git clone git@github.com:rick-liyue-huang/Blog-NodeJs.git`, 
+Take Blog-Koa project as an example, in order to display the project well, we need to pull the project to local
+by `git clone git@github.com:rick-liyue-huang/Blog-NodeJs.git`,
 and then `cd Blog-NodeJs/Blog-Koa`, to enter the three directories, and run `npm i` to install all the modules.
 
-Becaus this server and database run in the local, I have to create the database in local environment. I use mysql database and create the 'myblog1' database and then create 'blogs' and 'users' table to store the blogs and user data. Here has one **notice: I will use the encrypted password, so I will store the encrpted password in 'users' table.**, the password for 'myblog1' is 'password', we can refer the *'config/db.js'* file. In Mac, I normally download mysql, config it by 'MySQLWorkBench' and start it. 
+Becaus this server and database run in the local, I have to create the database in local environment. I use mysql database and create the 'myblog1' database and then create 'blogs' and 'users' table to store the blogs and user data. Here has one **notice: I will use the encrypted password, so I will store the encrpted password in 'users' table.**, the password for 'myblog1' is 'password', we can refer the _'config/db.js'_ file. In Mac, I normally download mysql, config it by 'MySQLWorkBench' and start it.
 
-We also need to use redis and nginx, I will run `brew install redis` and run `brew install nginx` in Mac to install them, by the way we also need to configurate *'/usr/local/etc/nginx/nginx.conf'* to visit the 'localhost:8088' to display pages. Front-end is stored in 'Front-End-View' directory, so we run `cd Front-End-View` and run `http-server -p 8001` to start the front-end pages, which display in 'localhost:8001'. I set the server port as 8000 in *'bin/www.js'*. Thus, 'localhost:8088/api/*/*' will display server-end, 'localhost:8001/' will display front-end, the general display will on route of 'localhost:8088/'.
-
+We also need to use redis and nginx, I will run `brew install redis` and run `brew install nginx` in Mac to install them, by the way we also need to configurate _'/usr/local/etc/nginx/nginx.conf'_ to visit the 'localhost:8088' to display pages. Front-end is stored in 'Front-End-View' directory, so we run `cd Front-End-View` and run `http-server -p 8001` to start the front-end pages, which display in 'localhost:8001'. I set the server port as 8000 in _'bin/www.js'_. Thus, 'localhost:8088/api/_/_' will display server-end, 'localhost:8001/' will display front-end, the general display will on route of 'localhost:8088/'.
 
 ## One More word
 
 从输入地址到返回内容：
-DNS解析，建立TCP连接，发送HTTP请求
-server接收到HTTP请求，处理，并返回
-客户端接收到返回数据，处理数据，如渲染页面执行js
+DNS 解析，建立 TCP 连接，发送 HTTP 请求
+server 接收到 HTTP 请求，处理，并返回
+客户端接收到返回数据，处理数据，如渲染页面执行 js
 
 database:
 
@@ -88,13 +80,13 @@ show tables
 
 insert into users (username, `password`, realname) values ('rick', '666', 'huangliyue');
 
-select * from users; 
+select \* from users;
 
-select * from users where username='rick'; 
+select \* from users where username='rick';
 
 select id from users where username like '%e%';
 
-select * from users order by id desc;
+select \* from users order by id desc;
 
 update users set realname='liyue' where id=1;
 
@@ -102,37 +94,37 @@ SET SQL_SAFE_UPDATES=0;
 
 delete from users where username='rick';
 
-select * from users where state<>0;
+select \* from users where state<>0;
 
 alter user 'root'@'localhost' identified with mysql_native_password by 'moon978329';
 
-## cookie session 
+## cookie session
 
 cookie 是存储在浏览器的一段字符串
 跨域不共享
 格式如 k1=v1;k2=v2;k3=v3; 因此可以存储结构化数据
-每次发送HTTP请求，会将请求域的cookie一起发送给server
-server可以修改cookie并且可以返回给浏览器
-浏览器也可以通过javascript修改cookie
+每次发送 HTTP 请求，会将请求域的 cookie 一起发送给 server
+server 可以修改 cookie 并且可以返回给浏览器
+浏览器也可以通过 javascript 修改 cookie
 
-cookie总存储userid,server端对应username
+cookie 总存储 userid,server 端对应 username
 session 解决的问题：
 因为暴露敏感信息，需要隐藏
-session 直接是js变量，放在nodejs的进程内存中
+session 直接是 js 变量，放在 nodejs 的进程内存中
 第一，进程内存有限，访问朗过大，内存暴增怎么办
 第二，正式线上运行时多进程，进程之间内存无法共享
 
-web server最常用额缓存数据库，数据存放在内存中
-相比MySQL，访问速度快
+web server 最常用额缓存数据库，数据存放在内存中
+相比 MySQL，访问速度快
 成本过高，可存储的数据量更小
-将web server和Redis拆分为两个单独的服务
+将 web server 和 Redis 拆分为两个单独的服务
 双方都是独立的，都是可扩展的
 
-session访问频繁，对性能要求高
-session可以不考虑断电丢失数据的问题
-session数据量不会太大
+session 访问频繁，对性能要求高
+session 可以不考虑断电丢失数据的问题
+session 数据量不会太大
 
-为何网站数据不适合Redis
+为何网站数据不适合 Redis
 操作频率不是太高
 断电不能丢失，必须保留
 数据量大，内存成本高
@@ -141,77 +133,79 @@ session数据量不会太大
 
 `brew install redis`
 directory
- '/usr/local/Cellar/redis/5.0.6: 13 files, 3.1MB'
+'/usr/local/Cellar/redis/5.0.6: 13 files, 3.1MB'
 
- `redis-server` `redis-cli`
+`redis-server` `redis-cli`
 
- set key val
- get key
- keys *
- del key
+set key val
+get key
+keys \*
+del key
 
- ## 前后端同域联调
+## 前后端同域联调
 
- 登录功能依赖cookie，必须用浏览器来联调
- cookie跨域不共享，前端和server必须同域
- 用 nginx
+登录功能依赖 cookie，必须用浏览器来联调
+cookie 跨域不共享，前端和 server 必须同域
+用 nginx
 
- npm run i --save -g http-server
+npm run i --save -g http-server
 
- nginx 是web服务器，开源免费
- 一般做静态服务，负载均衡
- 反向代理
+nginx 是 web 服务器，开源免费
+一般做静态服务，负载均衡
+反向代理
 
- `brew install nginx`
+`brew install nginx`
 
- config file:
- '/usr/local/etc/nginx/nginx.conf'
- test: `nginx -t`
- run: `nginx`
- reload: `nginx -s reload`
- stop: `nginx -s stop`
+config file:
+'/usr/local/etc/nginx/nginx.conf'
+test: `nginx -t`
+run: `nginx`
+reload: `nginx -s reload`
+stop: `nginx -s stop`
 
-in '/usr/local/etc/nginx/nginx.conf' 
- ```
+in '/usr/local/etc/nginx/nginx.conf'
+
+```
 location / {
-          proxy_pass  http://localhost:8001;
+         proxy_pass  http://localhost:8001;
 }
 
 location /api/ {
-    proxy_pass  http://localhost:8000;
-    proxy_set_header Host $Host;
+   proxy_pass  http://localhost:8000;
+   proxy_set_header Host $Host;
 }
 ```
 
-## log 
+## log
+
 日志放到文件中
 文件很大： 因此放到文件中
 
-
 ## crontab
+
 定时任务
-设置定时任务， 格式 *****command
-将access.log拷贝重命名为日期.access.log
-清空access.log,继续积累日志
+设置定时任务， 格式 **\***command
+将 access.log 拷贝重命名为日期.access.log
+清空 access.log,继续积累日志
 
 pwd the log path
 `/Users/mac/Documents/gitgarden/Blog-NodeJs/Blog-Node/logs`
 create copy.sh
 
 `crontab -e`
-to run 
+to run
 `* 0 * * * sh /Users/mac/Documents/gitgarden/Blog-NodeJs/Blog-Node/src/utils/copy.sh`
 
 `crontab -l` to check list
 
 ### pm2
 
-install by ` npm install pm2 -g`
+install by `npm install pm2 -g`
 check pm2 by `pm2 --version`
 
-`pm2 list` to check 
+`pm2 list` to check
 
-`pm2 start` 
+`pm2 start`
 `pm2 restart`
 `pm2 stop`
 `mp2 delete`
@@ -228,23 +222,22 @@ check pm2 by `pm2 --version`
       "node_modules",
       "logs"
     ],
-    "instances": 2, // 
+    "instances": 2, //
     "error_file": "logs/err.log", // 错误日志放到哪里
     "out_file": "logs/out.log", // 输出日志放到哪里
-    "log_date_format": "YYY-MM-DD HH:mm:ss" // 日志时间 
+    "log_date_format": "YYY-MM-DD HH:mm:ss" // 日志时间
   }
 }
 ```
+
 here create 'pm2.config.json' file
 
 进程守候：出现错误就会进程重新启动，并且记录错误
 配置文件：进程数量，日志文件目录
 多进程：操作系统有很多进程，但是会限制每个进程的大小，单个进程是受限的，因为如果进程崩溃，就会有问题，单个进程的内存是受限的
-内存无法充分利用多核CPU的优势
+内存无法充分利用多核 CPU 的优势
 多进程之间内存无法共享
-多进程之间可以通过访问redis来实现数据共享
-
-
+多进程之间可以通过访问 redis 来实现数据共享
 
 ## new blog by koa2
 
@@ -287,6 +280,7 @@ router.post('/login', async (ctx, next) => {
         <button>follow</button>
       <% } %>
 ```
+
 for the condition statement
 
 ```
@@ -294,6 +288,7 @@ for the condition statement
       isMe
     }) %>
 ```
+
 for ejs import, also can import javascript
 
 ```
@@ -307,6 +302,7 @@ for ejs import, also can import javascript
 </script>
 
 ```
+
 for thie loop statement
 
 also can write script tag for javascript
@@ -340,12 +336,13 @@ ORM - object relational mapping
 建模（外键） & 同步到数据库
 
 数据表， 用 js 中的模型 （class or object） 代替
-一条或者多条记录，用js中一个对象或者数组代替
-sql语句用对象方法代替
+一条或者多条记录，用 js 中一个对象或者数组代替
+sql 语句用对象方法代替
 
 using sequelize to connect database and create 'users' table, 并且创建了 createdAt and updatedAt.
 
-its better to write down these two ways together. 
+its better to write down these two ways together.
+
 ```
 Blog.belongsTo(User, {
   // create foreign key Blog.userId -> User.id
@@ -361,7 +358,6 @@ know how to create eer diagram.
 
 ![avatar](./pics/eer.png)
 
-
 ### about redis
 
 注意：用 ctx.session 来启动 session
@@ -374,15 +370,14 @@ know how to create eer diagram.
 
 意义： 在老系统里面编写新代码，对新代码编写单元测试，然后统一跑一遍，看看是否得到
 
-使用 jest 在 .test.js里面编写用例；
+使用 jest 在 .test.js 里面编写用例；
 
 `npm i --save-dev jest supertest`
 `"test": "cross-env NODE_ENV=test jest --runInBand --forceExit --colors"`
 
-
 ### 开发环境搭建
 
-创建 db 文件夹 
+创建 db 文件夹
 
 in 'seq.js'
 
@@ -406,31 +401,27 @@ add `"lint": "eslint --ext .js ./src"` in package.json
 ]å
 ```
 
-inspect 调试: 就是利用Chrome浏览器的方式来调试node.js代码
-` "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon --inspect=9229 bin/www",
-`
+inspect 调试: 就是利用 Chrome 浏览器的方式来调试 node.js 代码
+`"dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon --inspect=9229 bin/www",`
 
 and input `chrome://inspect/` in chrome browser
 
-
 404 页面和错误页
 
-明白view文件夹之间的ejs之间互相的引用
+明白 view 文件夹之间的 ejs 之间互相的引用
 
-在 routers里面建立两个文件夹，view 是针对页面， api是针对前后端接口
+在 routers 里面建立两个文件夹，view 是针对页面， api 是针对前后端接口
 
+## jwt -- json web token
 
-## jwt --  json web token
+用户认证成功后，server 端返回一个加密的 token 给客户端
+客户端后续每次请求都带 token,以示当前身份
 
-用户认证成功后，server端返回一个加密的token给客户端
-客户端后续每次请求都带token,以示当前身份
-
-jwt 用户信息加密存储在客户端，不依赖cookie，可跨域
+jwt 用户信息加密存储在客户端，不依赖 cookie，可跨域
 
 大型系统两者可共用
-jwt更适用于服务节点比较多，跨域比较多的系统，不需要redis
-session更适用于统一的web服务，server要严格管理用户信息
-
+jwt 更适用于服务节点比较多，跨域比较多的系统，不需要 redis
+session 更适用于统一的 web 服务，server 要严格管理用户信息
 
 ## 技术方案设计
 
@@ -443,7 +434,6 @@ session更适用于统一的web服务，server要严格管理用户信息
 
 @功能如何实现
 图片上传如何实现
-
 
 原型图演示
 
@@ -472,7 +462,7 @@ session更适用于统一的web服务，server要严格管理用户信息
 数据建模
 开发注册功能
 开发登录功能
-抽离logincheck中间件
+抽离 logincheck 中间件
 单元测试
 
 注册 /api/user/register
@@ -489,20 +479,76 @@ session更适用于统一的web服务，server要严格管理用户信息
 开发注册接口
 密码加密 用户信息验证
 
-
 json-schema to 校验用户数据
 使用 ajv
 
 创建单元测试来验证全部的用户部分
-单元测试是真实的来操作数据，因为是在test环境，因此没有污染数据
+单元测试是真实的来操作数据，因为是在 test 环境，因此没有污染数据
 
-返回 master 
+返回 master
 `git checkout master`
 `git pull origin master`
 `git merge newblog-feature-login`
 `git push origin master`
 newblog-feature-login
 
+DNS 解析，建立 TCP 连接，发送 http 请求
+server 接收到 http 请求，处理，并返回
+客户端接收到返回数据，处理数据
 
+```
+const fs = require("fs");
+const path = require("path");
 
+// 普通方法
 
+function getFileConent(fileName, callback) {
+  const fullFileName = path.resolve(__dirname, fileName);
+  fs.readFile(fullFileName, (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    callback(JSON.parse(data.toString()));
+  });
+}
+
+getFileConent("a.json", aData => {
+  console.log(aData);
+  getFileConent(aData.next, bData => {
+    console.log(bData);
+    getFileConent(bData.next, cData => {
+      console.log(cData);
+    });
+  });
+});
+
+// promise
+function getFileConentPromise(filename) {
+  const promise = new Promise((resolve, reject) => {
+    const fullFileName = path.resolve(__dirname, filename);
+    fs.readFile(fullFileName, (err, data) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(JSON.parse(data.toString()));
+    });
+  });
+  return promise;
+}
+
+getFileConentPromise("a.json")
+  .then(adata => {
+    console.log(adata);
+    return getFileConentPromise(adata.next); // promise
+  })
+  .then(bdata => {
+    console.log(bdata);
+    return getFileConentPromise(bdata.next);
+  })
+  .then(cdata => {
+    console.log(cdata);
+  });
+
+```
