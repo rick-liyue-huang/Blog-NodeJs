@@ -552,3 +552,43 @@ getFileConentPromise("a.json")
   });
 
 ```
+
+`ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootroot';`
+
+sql 语言
+
+```
+-- show databases;
+
+-- use myblog;
+-- show tables;
+
+-- insert into users (username, `password`, realname) values ('aj', '666', 'qiyang');
+-- select id, username from users;
+-- select username from users where realname='liyue' and `password`='666';
+-- select username from users where realname like'%li%';
+-- select * from users order by id desc;
+
+-- SET SQL_SAFE_UPDATES=0;
+-- update users set realname='huangqiyang' where username='aj';
+
+-- delete from users where username='leo';
+-- insert into users (username, `password`, realname) values ('leo', '888', 'liyue');
+
+
+-- update users set state='0' where username='leo';
+-- select * from users where state='1';
+
+-- insert into blogs (title, content, createtime, author) value('D', 'dd', 1583470841691, 'aj');
+
+-- delete from blogs where id=2;
+-- update blogs set content='ok' where id=3;
+
+-- select * from blogs;
+
+-- select version();
+
+-- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootroot';
+
+
+```

@@ -40,15 +40,34 @@ const serverHandler = (req, res) => {
     req.body = postData;
 
     // 处理blog路由
+    /*
     const blogData = handleBlogRouter(req, res);
     if (blogData) {
       res.end(JSON.stringify(blogData));
       return;
     }
+    */
+    //  得到promise
+    const blogResult = handleBlogRouter(req, res);
+    if (blogResult) {
+      blogResult.then(blogData => {
+        res.end(JSON.stringify(blogData)); // 对应着listData
+      });
+      return;
+    }
 
+    /*
     const userData = handleUserRouter(req, res);
     if (userData) {
       res.end(JSON.stringify(userData));
+      return;
+    }
+    */
+    const userResult = handleUserRouter(req, res);
+    if (userResult) {
+      userResult.then(userData => {
+        res.end(JSON.stringify(userData));
+      });
       return;
     }
 
