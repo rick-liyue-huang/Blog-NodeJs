@@ -638,3 +638,30 @@ keys \*
 nginx -t
 nginx -s reload
 nginx -s stop
+
+node.js 文件操作,node.js stream
+日志功能开发和使用
+日志文件拆分，日志内容分析
+日志要存储到文件中
+
+存储速度: redis > mysql > log
+相比较于 cpu 计算和内存读写，io 突出特点就是慢
+
+process.stdin.pipe(process.stdout)
+
+日志拆分
+日志内容会慢慢积累，放在一个文件中不好
+按照时间划分日志文件，例如 2020-02-10.access.log
+实现方式：Linux 的 crontab 命令，即定时任务
+
+设置定时任务：
+格式：
+`* * * * * commond`
+将 access.log 拷贝并且重命名为
+清空 access.log 文件，继续积累日志
+
+`crontab -e`
+`* 0 * * * sh /Users/apple/Documents/gitgarden/Blog-NodeJs/node-blog/src/utils/copy.sh`
+`crontab -l` 查询有哪些任务
+
+使用 node.js 的 readline 读取日志

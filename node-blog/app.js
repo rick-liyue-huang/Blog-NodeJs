@@ -2,6 +2,8 @@ const querystring = require("querystring");
 const handleBlogRouter = require("./src/router/blog");
 const handleUserRouter = require("./src/router/user");
 const { get, set } = require("./src/db/redis");
+const { access } = require("./src/utils/log");
+
 // session 数据
 // const SESSION_DATA = {};
 
@@ -37,6 +39,13 @@ const getPostData = req => {
 };
 
 const serverHandler = (req, res) => {
+  // 记录accesslog
+  access(
+    `${req.method} -- ${req.url} -- ${
+      req.headers["user-agent"]
+    } -- ${new Date()}`
+  );
+
   // 设置返回格式
   res.setHeader("Content-Type", "application/json");
   const url = req.url;
