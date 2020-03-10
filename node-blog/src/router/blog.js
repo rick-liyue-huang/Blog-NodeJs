@@ -7,6 +7,13 @@ const {
 } = require("../controller/blog");
 const { SuccessModel, ErrorModel } = require("../model/resModel");
 
+// 定义统一的登录验证函数
+const loginCheck = req => {
+  if (!req.session.username) {
+    return Promise.resolve(new ErrorModel("尚未登录"));
+  }
+};
+
 const handleBlogRouter = (req, res) => {
   const method = req.method;
   const id = req.query.id;
@@ -16,8 +23,20 @@ const handleBlogRouter = (req, res) => {
     // return {
     //   msg: "blog list"
     // };
-    const author = req.query.author || "";
+    let author = req.query.author || "";
     const keyword = req.query.keyword || "";
+
+    if (req.query.isadmin) {
+      // 管理员界面
+      const loginCheckResult = loginCheck(req);
+      if (loginCheckResult) {
+        // 未登录
+        return loginCheckResult;
+      }
+      // 强制查询自己的博客
+      author = req.session.username;
+    }
+
     // const listData = handleGetBlogList(author, keyword);
     // return new SuccessModel(listData);
     const listResult = handleGetBlogList(author, keyword);
@@ -47,7 +66,12 @@ const handleBlogRouter = (req, res) => {
     // };
     // const newData = handlePostBlogNew(req.body);
     // return new SuccessModel(newData);
-    req.body.author = "rick"; // 假数据
+
+    const loginCheckResult = loginCheck(req);
+    if (loginCheckResult) {
+      return loginCheckResult;
+    }
+    req.body.author = req.session.username; // 假数据
     const newResult = handlePostBlogNew(req.body);
     return newResult.then(newData => {
       return new SuccessModel(newData);
@@ -63,6 +87,11 @@ const handleBlogRouter = (req, res) => {
     // } else {
     //   return new ErrorModel("update error");
     // }
+
+    const loginCheckResult = loginCheck(req);
+    if (loginCheckResult) {
+      return loginCheckResult;
+    }
     const updataResult = handlePostBlogUpdate(id, req.body);
     return updataResult.then(updateData => {
       if (updateData) {
@@ -82,7 +111,12 @@ const handleBlogRouter = (req, res) => {
     // } else {
     //   return new ErrorModel("del error");
     // }
-    const author = "rick";
+
+    const loginCheckResult = loginCheck(req);
+    if (loginCheckResult) {
+      return loginCheckResult;
+    }
+    const author = req.session.username;
     const delResult = handlePostBlogDel(id, author);
     return delResult.then(delData => {
       if (delData) {

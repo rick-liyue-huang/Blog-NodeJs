@@ -611,3 +611,30 @@ cookie 的意义和特点
 上一节的问题：会暴露 username，很危险
 如何解决：cookie 中存储 userid，server 端对应 username
 解决方案：session, 即 server 端存储用户信息
+
+redis
+
+将 web server 和 Redis 拆分为两个单独的服务
+双方都是独立的，都是可扩展的
+mysql 也是可以扩展的
+
+session 访问频繁，对想能要求极高，因此存到内存中
+session 可以不考虑断电丢失数据的问题
+session 数据量不会很大
+
+mysql:
+操作频率不是太高
+断电不能丢失，必须保留
+数据量太大，内存成本高
+
+brew install redis
+redis-server
+redis-cli
+set myname rick
+get myname
+del myname
+keys \*
+
+nginx -t
+nginx -s reload
+nginx -s stop

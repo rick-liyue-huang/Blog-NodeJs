@@ -1,5 +1,6 @@
 const { handlePostUserLogin } = require("../controller/user");
 const { SuccessModel, ErrorModel } = require("../model/resModel");
+const { set } = require("../db/redis");
 
 // const setCookieExpires = () => {
 //   const d = new Date();
@@ -11,11 +12,11 @@ const handleUserRouter = (req, res) => {
   const method = req.method;
 
   // user login
-  if ("GET" === method && "/api/user/login" === req.path) {
+  if ("POST" === method && "/api/user/login" === req.path) {
     // return {
     //   msg: "user login"
     // };
-    const { username, password } = req.query;
+    const { username, password } = req.body;
     // const userData = handlePostUserLogin(username, password);
     // if (userData) {
     //   return new SuccessModel();
@@ -34,6 +35,8 @@ const handleUserRouter = (req, res) => {
         // );
         req.session.username = userData.username;
         req.session.realname = userData.realname;
+        // 同步到Redis中
+        set(req.sessionId, req.session);
         return new SuccessModel();
       } else {
         return new ErrorModel("unlogin");
@@ -45,7 +48,7 @@ const handleUserRouter = (req, res) => {
     if (/*req.cookie.username */ req.session.username) {
       return Promise.resolve(
         new SuccessModel({
-          username: req.cookie.username
+          username: req.session.username
         })
       );
     }
