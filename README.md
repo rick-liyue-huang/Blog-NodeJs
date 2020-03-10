@@ -665,3 +665,8 @@ process.stdin.pipe(process.stdout)
 `crontab -l` 查询有哪些任务
 
 使用 node.js 的 readline 读取日志
+
+安全：
+sql 注入：窃取数据库内容
+xss：窃取前端 cookie 内容
+密码加密： 保障用户的密码安全

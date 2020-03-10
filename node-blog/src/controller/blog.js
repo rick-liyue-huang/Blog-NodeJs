@@ -1,4 +1,5 @@
 // 这里面定义了
+const xss = require("xss");
 const { exec } = require("../db/mysql");
 
 const handleGetBlogList = (author, keyword) => {
@@ -22,6 +23,10 @@ const handleGetBlogList = (author, keyword) => {
   ];
   */
 
+  author = xss(author);
+  keyword = xss(keyword);
+  // author = escape(author);
+  // keyword = escape(keyword);
   let sql = `select * from blogs where 1=1 `;
   if (author) {
     sql += `and author = '${author}' `;
@@ -44,7 +49,7 @@ const handleGetBlogDetail = id => {
     author: "rick"
   };
   */
-  const sql = `select * from blogs where id='${id}'`;
+  const sql = `select * from blogs where id=${id}`;
   return exec(sql).then(rows => {
     return rows[0]; // 因为得到是数组，需要得到第一个元素
   });
@@ -56,9 +61,13 @@ const handlePostBlogNew = (blogData = {}) => {
   // return {
   //   id: 3
   // };
-  const title = blogData.title;
-  const content = blogData.content;
-  const author = blogData.author;
+  let title = blogData.title;
+  let content = blogData.content;
+  let author = blogData.author;
+  title = xss(title);
+  content = xss(content);
+  author = xss(author);
+
   const createTime = Date.now();
   const sql = `insert into blogs (title, content, createtime, author) 
    values ('${title}', '${content}', ${createTime}, '${author}')`;
@@ -74,10 +83,12 @@ const handlePostBlogUpdate = (id, blogData = {}) => {
   console.log(id, blogData);
   // return true;
 
-  const title = blogData.title;
-  const content = blogData.content;
+  let title = blogData.title;
+  let content = blogData.content;
+  // title = escape(title);
+  // content = escape(content);
   const sql = `update blogs set 
-  title='${title}', content='${content}' where id=${id}`;
+  title='${title}', content='${content}' where id=${id};`;
   return exec(sql).then(updateData => {
     if (updateData.affectedRows > 0) {
       return true;
@@ -89,6 +100,7 @@ const handlePostBlogUpdate = (id, blogData = {}) => {
 
 const handlePostBlogDel = (id, author) => {
   // return true;
+  // author = escape(author);
   const sql = `delete from blogs where id=${id} and author='${author}';`;
   return exec(sql).then(delData => {
     if (delData.affectedRows > 0) {
