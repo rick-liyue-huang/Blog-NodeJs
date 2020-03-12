@@ -89,6 +89,7 @@
 
       // load data
       get(url).then(res => {
+        console.log("res -------:", res);
         if (res.errno !== 0) {
           alert("wrong data");
           return;

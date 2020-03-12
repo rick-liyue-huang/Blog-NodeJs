@@ -670,3 +670,8 @@ process.stdin.pipe(process.stdout)
 sql 注入：窃取数据库内容
 xss：窃取前端 cookie 内容
 密码加密： 保障用户的密码安全
+
+### 操作 express
+
+使用 express-session 和 connect-redis 简单方便
+req.session 保存登录信息，登录校验做成 express 中间件
