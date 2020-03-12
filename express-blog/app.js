@@ -1,6 +1,7 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
+const fs = require("fs");
 // 可以使用cookie
 var cookieParser = require("cookie-parser");
 // 实现 logger功能
@@ -18,7 +19,29 @@ var app = express();
 // app.set("views", path.join(__dirname, "views"));
 // app.set("view engine", "jade");
 
-app.use(logger("dev"));
+// 这里已经开始在dev环境中在控制台处理log
+const ENV = process.env.NODE_ENV;
+if (ENV !== "production") {
+  // development environment
+  app.use(
+    logger("dev", {
+      // stream: process.stdout // 默认状态，直接输入到控制台
+    })
+  );
+} else {
+  // production environment
+  // 将日志写入文件
+  const logFileName = path.join(__dirname, "logs", "access.log");
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: "a"
+  });
+  app.use(
+    logger("combined", {
+      stream: writeStream
+    })
+  );
+}
+
 // getpostdata方法 req.body
 app.use(express.json());
 // 兼容 content-type: appliation/json 或者其他的格式

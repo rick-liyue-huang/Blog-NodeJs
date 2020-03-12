@@ -675,3 +675,17 @@ xss：窃取前端 cookie 内容
 
 使用 express-session 和 connect-redis 简单方便
 req.session 保存登录信息，登录校验做成 express 中间件
+
+日志
+access.log 记录 直接使用脚手架推荐的 morgan 完成
+自定义日志使用 console.log 和 console.error
+日志拆分，日志分析，之前讲过，不再赘述
+`https://github.com/expressjs/morgan`
+
+req.query req.body res.json 都是 express 自带的
+express-session connect-redis 登录中间件
+使用 morgan 记录日志
+
+使用框架开发的好处
+解耦路由和使用插件
+express 原理
