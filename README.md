@@ -689,3 +689,11 @@ express-session connect-redis 登录中间件
 使用框架开发的好处
 解耦路由和使用插件
 express 原理
+
+koa2
+
+// 要点：
+// await 后面可以追加 promise 对象
+// await 必须包裹在 async 函数里面
+// async 函数执行返回的也是 promise 对象
+// try catch 截获 promise 中的 reject 值
