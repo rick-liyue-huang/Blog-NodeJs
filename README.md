@@ -697,3 +697,32 @@ koa2
 // await 必须包裹在 async 函数里面
 // async 函数执行返回的也是 promise 对象
 // try catch 截获 promise 中的 reject 值
+
+koa:
+
+对于 session 和 Redis
+使用
+koa-generic-session koa-redis
+
+access.log 记录使用 morgan
+自定义使用 console log console err
+
+进程守护
+系统崩溃自动重启
+启动多进程充分利用 CPU 和内存
+自带日志记录功能
+
+pm2 list
+
+pm2 start
+
+pm2 restart
+pm2 stop
+pm2 delete
+pm2 info
+pm2 log
+pm2 monit
+
+进程守护：
+node app.js nodemon app.js 进程崩溃则不能访问
+pm2 遇到进程崩溃就会自动重启
